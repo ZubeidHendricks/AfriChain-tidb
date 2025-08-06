@@ -1,0 +1,205 @@
+name: verichainx-hedera-hackathon
+region: nyc1
+
+services:
+  # FastAPI Backend API
+  - name: api
+    source_dir: /verichainX
+    github:
+      repo: ZubeidHendricks/verichainX-hedera
+      branch: main
+      deploy_on_push: true
+    build_command: |
+      cd verichainX &&
+      pip install -r requirements.txt
+    run_command: |
+      cd verichainX &&
+      python -m uvicorn src.counterfeit_detection.main:app --host 0.0.0.0 --port 8080
+    environment_slug: python
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    http_port: 8080
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 30
+      period_seconds: 10
+      success_threshold: 1
+      failure_threshold: 3
+      timeout_seconds: 5
+    routes:
+      - path: /api
+    envs:
+      - key: DATABASE_URL
+        scope: RUN_AND_BUILD_TIME
+        value: sqlite:///./verichainx.db
+      - key: REDIS_URL
+        scope: RUN_AND_BUILD_TIME
+        value: ${redis.DATABASE_URL}
+      - key: API_HOST
+        scope: RUN_AND_BUILD_TIME
+        value: 0.0.0.0
+      - key: API_PORT
+        scope: RUN_AND_BUILD_TIME
+        value: "8080"
+      - key: DEBUG
+        scope: RUN_AND_BUILD_TIME
+        value: "false"
+      - key: SECRET_KEY
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: hackathon-demo-secret-key-2025
+      - key: OPENAI_API_KEY
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: demo-key-replace-with-real
+      - key: ANTHROPIC_API_KEY
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: demo-key-replace-with-real
+      - key: EMBEDDING_MODEL
+        scope: RUN_AND_BUILD_TIME
+        value: all-MiniLM-L6-v2
+      - key: VECTOR_DIMENSIONS
+        scope: RUN_AND_BUILD_TIME
+        value: "384"
+
+  # Hedera Service (TypeScript/Node.js)
+  - name: hedera-service
+    source_dir: /verichainX/hedera-service
+    github:
+      repo: ZubeidHendricks/verichainX-hedera
+      branch: main
+      deploy_on_push: true
+    build_command: |
+      cd verichainX/hedera-service &&
+      npm install &&
+      npm run build
+    run_command: |
+      cd verichainX/hedera-service &&
+      npm start
+    environment_slug: node-js
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    http_port: 8080
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 30
+      period_seconds: 10
+      success_threshold: 1
+      failure_threshold: 3
+      timeout_seconds: 5
+    routes:
+      - path: /hedera
+    envs:
+      - key: PORT
+        scope: RUN_AND_BUILD_TIME
+        value: "8080"
+      - key: HEDERA_NETWORK
+        scope: RUN_AND_BUILD_TIME
+        value: testnet
+      - key: HEDERA_ACCOUNT_ID
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: 0.0.4752063
+      - key: HEDERA_PRIVATE_KEY
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: demo-private-key-replace-with-real
+      - key: NODE_ENV
+        scope: RUN_AND_BUILD_TIME
+        value: production
+
+  # React Frontend Dashboard
+  - name: frontend
+    source_dir: /verichainX/src/frontend/admin-dashboard
+    github:
+      repo: ZubeidHendricks/verichainX-hedera
+      branch: main
+      deploy_on_push: true
+    build_command: |
+      cd verichainX/src/frontend/admin-dashboard &&
+      npm install &&
+      npm run build
+    run_command: |
+      cd verichainX/src/frontend/admin-dashboard &&
+      npx serve -s dist -l 8080
+    environment_slug: node-js
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    http_port: 8080
+    routes:
+      - path: /
+    envs:
+      - key: VITE_API_BASE_URL
+        scope: BUILD_TIME
+        value: ${api.PUBLIC_URL}/api
+      - key: VITE_HEDERA_SERVICE_URL
+        scope: BUILD_TIME
+        value: ${hedera-service.PUBLIC_URL}/hedera
+
+# Managed Database Services
+databases:
+  # Redis for caching and session management
+  - name: redis
+    engine: REDIS
+    version: "7"
+    size: db-s-1vcpu-1gb
+    num_nodes: 1
+
+# Worker Services for Background Tasks
+workers:
+  - name: celery-worker
+    source_dir: /verichainX
+    github:
+      repo: ZubeidHendricks/verichainX-hedera
+      branch: main
+      deploy_on_push: true
+    build_command: |
+      cd verichainX &&
+      pip install -r requirements.txt
+    run_command: |
+      cd verichainX &&
+      python -m celery -A src.counterfeit_detection.core.celery worker --loglevel=info
+    environment_slug: python
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    envs:
+      - key: DATABASE_URL
+        scope: RUN_AND_BUILD_TIME
+        value: sqlite:///./verichainx.db
+      - key: REDIS_URL
+        scope: RUN_AND_BUILD_TIME
+        value: ${redis.DATABASE_URL}
+      - key: OPENAI_API_KEY
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: demo-key-replace-with-real
+      - key: ANTHROPIC_API_KEY
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: demo-key-replace-with-real
+
+# Jobs for Database Initialization
+jobs:
+  - name: db-migrate
+    source_dir: /verichainX
+    github:
+      repo: ZubeidHendricks/verichainX-hedera
+      branch: main
+    build_command: |
+      cd verichainX &&
+      pip install -r requirements.txt
+    run_command: |
+      cd verichainX &&
+      python -c "
+      from src.counterfeit_detection.core.database import init_db
+      init_db()
+      print('Database initialized successfully!')
+      "
+    environment_slug: python
+    instance_size_slug: basic-xxs
+    kind: PRE_DEPLOY
+    envs:
+      - key: DATABASE_URL
+        scope: RUN_AND_BUILD_TIME
+        value: sqlite:///./verichainx.db
