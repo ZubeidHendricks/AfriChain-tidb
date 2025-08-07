@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "verichainx-api", 
   "builds": [
     {
       "src": "api/index.py",
@@ -22,10 +21,5 @@
     "ENVIRONMENT": "production",
     "DEBUG": "false", 
     "HACKATHON_MODE": "true"
-  },
-  "functions": {
-    "api/index.py": {
-      "runtime": "python3.11"
-    }
   }
 }
