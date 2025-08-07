@@ -6,23 +6,11 @@
       "use": "@vercel/python"
     },
     {
-      "src": "api/debug.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "public/**",
+      "src": "public/index.html",
       "use": "@vercel/static"
     }
   ],
   "routes": [
-    {
-      "src": "/debug/(.*)",
-      "dest": "api/debug.py"
-    },
-    {
-      "src": "/debug",
-      "dest": "api/debug.py"
-    },
     {
       "src": "/api/(.*)",
       "dest": "api/index.py"
@@ -42,10 +30,6 @@
     {
       "src": "/",
       "dest": "public/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "api/index.py"
     }
   ],
   "env": {
