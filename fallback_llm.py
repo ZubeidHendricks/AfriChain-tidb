@@ -8,6 +8,8 @@ import os
 import requests
 import json
 import logging
+import time
+import asyncio
 from typing import Dict, Any, Optional, List
 from enum import Enum
 
@@ -70,14 +72,19 @@ class FallbackLLMManager:
     
     async def _openai_request(self, product_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """OpenAI API request (original implementation)"""
-        import openai
+        try:
+            import openai
+        except ImportError:
+            raise Exception("OpenAI library not available")
         
-        if not openai.api_key or not openai.api_key.startswith("sk-"):
+        openai_api_key = os.getenv("OPENAI_API_KEY")
+        if not openai_api_key or not openai_api_key.startswith("sk-"):
             raise Exception("OpenAI API key not available")
         
         # Your existing OpenAI logic from main_tidb.py
         prompt = self._build_analysis_prompt(product_data)
         
+        openai.api_key = openai_api_key
         response = openai.ChatCompletion.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
@@ -107,7 +114,7 @@ class FallbackLLMManager:
             }
         }
         
-        response = requests.post(url, json=payload)
+        response = requests.post(url, json=payload, timeout=30)
         response.raise_for_status()
         
         result = response.json()
@@ -137,7 +144,7 @@ class FallbackLLMManager:
             "temperature": 0.3
         }
         
-        response = requests.post(url, json=payload, headers=headers)
+        response = requests.post(url, json=payload, headers=headers, timeout=30)
         response.raise_for_status()
         
         result = response.json()
@@ -167,7 +174,7 @@ class FallbackLLMManager:
             }
         }
         
-        response = requests.post(url, json=payload, headers=headers)
+        response = requests.post(url, json=payload, headers=headers, timeout=30)
         response.raise_for_status()
         
         result = response.json()
