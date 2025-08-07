@@ -133,8 +133,8 @@ graph TB
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-org/agentic-counterfeit-detection.git
-cd agentic-counterfeit-detection
+git clone https://github.com/ZubeidHendricks/verichainX-hedera.git
+cd verichainX-hedera
 ```
 
 ### 2. Environment Setup
@@ -146,9 +146,31 @@ cp .env.example .env
 nano .env
 ```
 
-### 3. Docker Deployment (Recommended)
+### 3. Quick Deploy to Digital Ocean (Recommended)
+
+#### Option A: App Platform (5 minutes)
 ```bash
-# Start all services
+# Deploy via Digital Ocean Console:
+# 1. Go to https://cloud.digitalocean.com/apps
+# 2. Create App from GitHub
+# 3. Select: ZubeidHendricks/verichainX-hedera
+# 4. Use .do/app.yaml configuration
+# 5. Set your API keys in environment variables
+# 6. Deploy!
+```
+
+#### Option B: Droplet Deployment (15 minutes)
+```bash
+# Make deployment script executable
+chmod +x deploy-to-do.sh
+
+# Run automated deployment
+./deploy-to-do.sh
+```
+
+#### Option C: Local Docker Deployment
+```bash
+# Start all services locally
 docker-compose up -d
 
 # Initialize database
@@ -373,7 +395,39 @@ report = await audit_service.generate_compliance_report(
 
 ## 🚀 Deployment
 
-### Docker Deployment
+### Digital Ocean Deployment (Recommended)
+
+#### App Platform
+```bash
+# Fastest deployment option
+# Uses .do/app.yaml configuration
+# Managed services with auto-scaling
+# Built-in SSL and monitoring
+# Cost: ~$25-50/month
+```
+
+#### Droplet Deployment
+```bash
+# Run the automated deployment script
+./deploy-to-do.sh
+
+# Manual deployment
+# 1. Create droplet (s-2vcpu-4gb)
+# 2. Setup Docker and dependencies
+# 3. Clone repository and build
+# 4. Configure firewall and SSL
+# Cost: ~$24/month
+```
+
+#### Access Your Deployed Application
+- 🌐 **Frontend**: `https://your-app.ondigitalocean.app/`
+- 📡 **API**: `https://your-app.ondigitalocean.app/api/`
+- 📚 **API Docs**: `https://your-app.ondigitalocean.app/api/docs`
+- 🔗 **Hedera Service**: `https://your-app.ondigitalocean.app/hedera/`
+
+### Alternative Deployments
+
+#### Docker Deployment
 ```bash
 # Production deployment
 docker-compose -f docker-compose.prod.yml up -d
@@ -382,7 +436,7 @@ docker-compose -f docker-compose.prod.yml up -d
 docker-compose up -d --scale api=3
 ```
 
-### Kubernetes Deployment
+#### Kubernetes Deployment
 ```bash
 # Deploy to Kubernetes
 kubectl apply -f k8s/

@@ -10,6 +10,7 @@ from .endpoints.rules import router as rules_router
 from .endpoints.notifications import router as notifications_router
 from .endpoints.enforcement import router as enforcement_router
 from .endpoints.compliance import router as compliance_router
+from .endpoints.hedera_bridge import router as hedera_bridge_router
 
 # Create main v1 router
 v1_router = APIRouter(prefix="/v1")
@@ -23,5 +24,6 @@ v1_router.include_router(rules_router)
 v1_router.include_router(notifications_router)
 v1_router.include_router(enforcement_router)
 v1_router.include_router(compliance_router)
+v1_router.include_router(hedera_bridge_router)
 
 __all__ = ["v1_router"]
