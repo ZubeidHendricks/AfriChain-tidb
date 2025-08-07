@@ -89,9 +89,36 @@ class ProductSummary(BaseModel):
     brand: str
     created_at: str
 
-# AI Analysis Function
+# Import fallback LLM manager
+from fallback_llm import llm_manager
+
+# AI Analysis Function with Fallback Support
 async def analyze_with_openai(product_data: ProductAnalysisRequest) -> Dict[str, Any]:
-    """Analyze product using OpenAI GPT-4"""
+    """Analyze product using AI with automatic fallback to free providers"""
+    
+    # Use the fallback LLM manager instead of direct OpenAI
+    try:
+        return await llm_manager.analyze_product({
+            "product_name": product_data.product_name,
+            "category": product_data.category,
+            "description": product_data.description,
+            "price": product_data.price,
+            "seller_info": product_data.seller_info
+        })
+    except Exception as e:
+        logger.error(f"All AI providers failed: {e}")
+        # Return fallback analysis
+        return await llm_manager._fallback_analysis({
+            "product_name": product_data.product_name,
+            "category": product_data.category,
+            "description": product_data.description,
+            "price": product_data.price,
+            "seller_info": product_data.seller_info
+        })
+
+# Keep original function for backward compatibility
+async def analyze_with_openai_original(product_data: ProductAnalysisRequest) -> Dict[str, Any]:
+    """Original OpenAI-only analysis function"""
     
     seller_name = product_data.seller_info.get('name', 'Unknown') if product_data.seller_info else 'Unknown'
     seller_verified = product_data.seller_info.get('verified', False) if product_data.seller_info else False
