@@ -223,15 +223,34 @@ async def api_info():
         "demo_mode": True
     }
 
-@app.get("/", response_class=HTMLResponse)
-async def dashboard():
-    """Serve the main dashboard"""
+@app.get("/")
+async def root():
+    """API root - redirect users to React landing page"""
+    return {
+        "message": "VeriChainX API Backend",
+        "description": "AI-Powered Counterfeit Detection System - Backend API",
+        "version": "2.0.0",
+        "landing_page": "Deploy your React glassmorphic landing page to this domain root",
+        "endpoints": {
+            "health": "/health",
+            "docs": "/docs",
+            "admin_dashboard": "/dashboard",
+            "api_v1": "/api/v1/*"
+        },
+        "powered_by": ["TiDB Cloud HTAP", "Hedera Hashgraph", "Multi-Provider AI"],
+        "hackathons": ["TiDB 2025", "Hedera Hackathon"],
+        "status": "operational"
+    }
+
+@app.get("/dashboard", response_class=HTMLResponse)
+async def admin_dashboard():
+    """Serve the interactive admin dashboard"""
     return HTMLResponse(content="""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VeriChainX - AI Counterfeit Detection Dashboard</title>
+    <title>VeriChainX - Admin Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -241,81 +260,299 @@ async def dashboard():
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
             min-height: 100vh;
-            color: #333;
+            color: #ffffff;
+            position: relative;
+        }
+
+        /* Gold accent gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(255, 215, 0, 0.1) 0%, 
+                transparent 20%, 
+                transparent 80%, 
+                rgba(255, 215, 0, 0.1) 100%
+            );
+            pointer-events: none;
+            z-index: 0;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
         
         .header {
             text-align: center;
-            color: white;
             margin-bottom: 40px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(255,215,0,0.1) 100%);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
         
         .header h1 {
-            font-size: 3rem;
+            font-size: 4rem;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
         }
         
-        .hackathon-badges {
+        .header .subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+        
+        .nav-bar {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
+            gap: 15px;
+            margin-bottom: 30px;
         }
         
-        .badge {
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            padding: 10px 20px;
-            border-radius: 25px;
-            color: white;
-            font-weight: bold;
-            border: 1px solid rgba(255,255,255,0.3);
+        .nav-btn {
+            padding: 12px 24px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
         }
         
         .dashboard {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
             margin-bottom: 40px;
         }
         
         .card {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .card:hover::before {
+            left: 100%;
         }
         
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.4);
+        }
+        
+        .card h3 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #FFD700;
+            font-weight: 600;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
         }
         
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin: 10px;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .result.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: #00ff88;
+        }
+        
+        .result.warning {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            color: #ffaa00;
+        }
+        
+        .result.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff4444;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+        
+        .demo-products {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .demo-product {
+            padding: 12px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .demo-product:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .loading {
+            text-align: center;
+            color: #FFD700;
+        }
+        
+        .spinner {
+            border: 3px solid rgba(255, 215, 0, 0.1);
+            border-top: 3px solid #FFD700;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
         }
         
         .features-list {
@@ -323,78 +560,111 @@ async def dashboard():
         }
         
         .features-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .features-list li:last-child {
+            border-bottom: none;
         }
         
         .features-list li:before {
-            content: "✓";
-            color: #28a745;
+            content: "⚡";
+            color: #FFD700;
             font-weight: bold;
             margin-right: 10px;
-        }
-        
-        .footer {
-            text-align: center;
-            color: rgba(255,255,255,0.8);
-            margin-top: 40px;
-            padding: 20px;
-        }
-        
-        .demo-section {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 VeriChainX</h1>
-            <p style="font-size: 1.2rem; opacity: 0.9;">AI-Powered Counterfeit Detection System</p>
-            <div class="hackathon-badges">
-                <div class="badge">🏆 TiDB 2025 Hackathon</div>
-                <div class="badge">🚀 Hedera Hackathon</div>
+            <h1>⚡ VeriChainX Admin</h1>
+            <p class="subtitle">AI-Powered Counterfeit Detection Dashboard</p>
+            
+            <div class="nav-bar">
+                <a href="/" class="nav-btn">🏠 Landing Page</a>
+                <a href="/docs" class="nav-btn">📚 API Docs</a>
+                <a href="/health" class="nav-btn">❤️ Health</a>
+                <a href="/api/v1/analytics/dashboard" class="nav-btn">📊 Analytics</a>
             </div>
         </div>
 
         <div class="dashboard">
             <div class="card">
-                <h3>📚 API Documentation</h3>
-                <p>Explore the complete VeriChainX API with interactive documentation.</p>
-                <a href="/docs" class="btn">📖 Interactive API Docs</a>
-                <a href="/redoc" class="btn">📋 ReDoc Documentation</a>
-            </div>
+                <h3>🔍 AI Product Analysis</h3>
+                <p>Analyze products for counterfeit detection using our multi-provider AI system.</p>
+                
+                <form id="analysisForm">
+                    <div class="form-group">
+                        <label>Product Name:</label>
+                        <input type="text" id="productName" placeholder="e.g., iPhone 15 Pro" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <textarea id="description" rows="3" placeholder="Product description and details" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Price ($):</label>
+                        <input type="number" id="price" step="0.01" placeholder="999.99" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category:</label>
+                        <select id="category">
+                            <option value="Electronics">Electronics</option>
+                            <option value="Fashion">Fashion</option>
+                            <option value="Luxury">Luxury Goods</option>
+                            <option value="Automotive">Automotive</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Seller Name:</label>
+                        <input type="text" id="sellerName" placeholder="Seller/Store name">
+                    </div>
+                    <button type="submit" class="btn" id="analyzeBtn">
+                        🤖 Analyze with AI
+                    </button>
+                </form>
 
-            <div class="card">
-                <h3>❤️ System Health</h3>
-                <p>Check the real-time status of all VeriChainX components.</p>
-                <a href="/health" class="btn">🔍 Health Check</a>
-                <a href="/api/v1/analytics/dashboard" class="btn">📊 Analytics API</a>
-            </div>
-
-            <div class="card">
-                <h3>🤖 AI Analysis Demo</h3>
-                <div class="demo-section">
-                    <h4>Try the API with cURL:</h4>
-                    <pre style="background: #2d3748; color: #e2e8f0; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 12px;">
-curl -X POST "/api/v1/products/analyze" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "product_name": "iPhone 15 Pro",
-    "description": "Brand new, unlocked",
-    "price": 199.99,
-    "category": "Electronics",
-    "seller_info": {"name": "QuickDeals", "verified": false}
-  }'</pre>
+                <div class="demo-products">
+                    <div class="demo-product" onclick="fillDemo('suspicious')">
+                        📱 Demo: Suspicious iPhone ($199 - Too Low!)
+                    </div>
+                    <div class="demo-product" onclick="fillDemo('luxury')">
+                        👜 Demo: Fake Luxury Handbag
+                    </div>
+                    <div class="demo-product" onclick="fillDemo('legitimate')">
+                        💍 Demo: Legitimate Jewelry
+                    </div>
                 </div>
-                <a href="/docs#/default/analyze_product_api_v1_products_analyze_post" class="btn">🧪 Try in Docs</a>
+
+                <div id="analysisResult"></div>
             </div>
 
             <div class="card">
-                <h3>🚀 Key Features</h3>
+                <h3>📊 System Status</h3>
+                <div id="systemStatus">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading system status...
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📈 Live Analytics</h3>
+                <div id="analytics">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading analytics...
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🚀 Platform Features</h3>
                 <ul class="features-list">
                     <li>Real-time AI counterfeit detection</li>
                     <li>TiDB Cloud HTAP database</li>
@@ -403,35 +673,299 @@ curl -X POST "/api/v1/products/analyze" \\
                     <li>Vector similarity search</li>
                     <li>Enterprise analytics</li>
                     <li>Scalable architecture</li>
-                    <li>RESTful API</li>
+                    <li>RESTful API integration</li>
                 </ul>
             </div>
 
             <div class="card">
-                <h3>🗄️ TiDB Cloud Integration</h3>
-                <p>Powered by TiDB Cloud's Hybrid Transactional/Analytical Processing (HTAP) capabilities.</p>
-                <a href="/api/v1/tidb/stats" class="btn">📈 TiDB Statistics</a>
-                <a href="/api/v1/products" class="btn">📦 View Products</a>
+                <h3>🗄️ TiDB Cloud Stats</h3>
+                <div id="tidbStats">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading TiDB statistics...
+                    </div>
+                </div>
             </div>
 
             <div class="card">
-                <h3>🎯 Hackathon Ready</h3>
-                <p>This demo showcases cutting-edge technologies:</p>
-                <ul style="padding-left: 20px; margin-top: 10px;">
-                    <li><strong>TiDB 2025:</strong> HTAP database with vector search</li>
-                    <li><strong>Hedera:</strong> Blockchain audit trails and NFTs</li>
-                    <li><strong>AI:</strong> Multi-provider fallback system</li>
-                    <li><strong>Enterprise:</strong> Production-ready architecture</li>
-                </ul>
+                <h3>🎯 Hackathon Info</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">🏆</div>
+                        <div class="stat-label">TiDB 2025</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">🚀</div>
+                        <div class="stat-label">Hedera</div>
+                    </div>
+                </div>
+                <p>This admin dashboard showcases advanced AI counterfeit detection capabilities built for both hackathons.</p>
             </div>
         </div>
 
         <div class="footer">
-            <p><strong>🏗️ Tech Stack:</strong> TiDB Cloud HTAP + Hedera Hashgraph + Multi-Provider AI + FastAPI + Vercel</p>
+            <p><strong>⚡ Tech Stack:</strong> TiDB Cloud HTAP + Hedera Hashgraph + Multi-Provider AI + FastAPI</p>
             <p><strong>🎯 Built for:</strong> TiDB 2025 & Hedera Hackathons</p>
-            <p><strong>📂 Repository:</strong> <a href="https://github.com/ZubeidHendricks/verichainX-hedera" style="color: rgba(255,255,255,0.9);">GitHub</a></p>
+            <p><strong>📂 Repository:</strong> <a href="https://github.com/ZubeidHendricks/verichainX-hedera" style="color: #FFD700;">GitHub</a></p>
         </div>
     </div>
+
+    <script>
+        const API_BASE_URL = window.location.origin;
+
+        // Demo data sets
+        const demoProducts = {
+            suspicious: {
+                productName: 'iPhone 15 Pro 256GB',
+                description: 'Brand new iPhone 15 Pro, unlocked, comes with original box and accessories. Limited time offer!',
+                price: 199.99,
+                category: 'Electronics',
+                sellerName: 'QuickDeals Electronics'
+            },
+            luxury: {
+                productName: 'Louis Vuitton Neverfull MM',
+                description: 'Authentic LV handbag, perfect condition, includes dustbag and authenticity card',
+                price: 299.99,
+                category: 'Luxury',
+                sellerName: 'LuxuryOutlet Store'
+            },
+            legitimate: {
+                productName: 'Diamond Engagement Ring 1.5ct',
+                description: 'GIA certified diamond engagement ring, 14K white gold setting, includes GIA certificate and appraisal',
+                price: 4999.99,
+                category: 'Luxury',
+                sellerName: 'DiamondsDirect Jewelry'
+            }
+        };
+
+        function fillDemo(type) {
+            const demo = demoProducts[type];
+            document.getElementById('productName').value = demo.productName;
+            document.getElementById('description').value = demo.description;
+            document.getElementById('price').value = demo.price;
+            document.getElementById('category').value = demo.category;
+            document.getElementById('sellerName').value = demo.sellerName;
+        }
+
+        // Load initial data
+        async function loadSystemStatus() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const data = await response.json();
+                
+                const statusHtml = `
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">✅</div>
+                            <div class="stat-label">System</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.services.tidb_cloud === 'connected' ? '🟢' : '🔴'}</div>
+                            <div class="stat-label">TiDB</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">🤖</div>
+                            <div class="stat-label">AI Engine</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">⚡</div>
+                            <div class="stat-label">Vector Search</div>
+                        </div>
+                    </div>
+                    <p><strong>Database:</strong> ${data.database.provider}</p>
+                    <p><strong>Features:</strong> ${data.database.features.join(', ')}</p>
+                    <p><strong>Updated:</strong> ${new Date().toLocaleTimeString()}</p>
+                `;
+                
+                document.getElementById('systemStatus').innerHTML = statusHtml;
+            } catch (error) {
+                document.getElementById('systemStatus').innerHTML = `
+                    <div class="result error">
+                        <strong>⚠️ Status Check Failed</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        async function loadAnalytics() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/v1/analytics/dashboard`);
+                const data = await response.json();
+                
+                const analyticsHtml = `
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">${data.total_products_analyzed}</div>
+                            <div class="stat-label">Products</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.counterfeit_detected}</div>
+                            <div class="stat-label">Counterfeits</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${(data.detection_accuracy * 100).toFixed(0)}%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.avg_processing_time_ms}ms</div>
+                            <div class="stat-label">Speed</div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('analytics').innerHTML = analyticsHtml;
+            } catch (error) {
+                document.getElementById('analytics').innerHTML = `
+                    <div class="result error">
+                        <strong>⚠️ Analytics Failed</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        async function loadTidbStats() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/v1/tidb/stats`);
+                const data = await response.json();
+                
+                const tidbHtml = `
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">${data.total_tables}</div>
+                            <div class="stat-label">Tables</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.products_table_rows}</div>
+                            <div class="stat-label">Records</div>
+                        </div>
+                    </div>
+                    <p><strong>Version:</strong> ${data.tidb_version.split(' ')[0]}</p>
+                    <p><strong>Features:</strong> HTAP, Vector Search, Auto-Scale</p>
+                `;
+                
+                document.getElementById('tidbStats').innerHTML = tidbHtml;
+            } catch (error) {
+                document.getElementById('tidbStats').innerHTML = `
+                    <div class="result error">
+                        <strong>⚠️ TiDB Stats Failed</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Product analysis form
+        document.getElementById('analysisForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const resultDiv = document.getElementById('analysisResult');
+            
+            // Show loading state
+            analyzeBtn.disabled = true;
+            analyzeBtn.innerHTML = '🔄 Analyzing...';
+            resultDiv.innerHTML = '<div class="loading"><div class="spinner"></div>AI analysis in progress...</div>';
+            
+            try {
+                const formData = {
+                    product_name: document.getElementById('productName').value,
+                    description: document.getElementById('description').value,
+                    price: parseFloat(document.getElementById('price').value),
+                    category: document.getElementById('category').value,
+                    seller_info: {
+                        name: document.getElementById('sellerName').value || 'Unknown',
+                        verified: false
+                    }
+                };
+                
+                const response = await fetch(`${API_BASE_URL}/api/v1/products/analyze`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API Error ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                
+                const resultClass = result.is_counterfeit ? 'warning' : 'success';
+                const resultIcon = result.is_counterfeit ? '⚠️' : '✅';
+                const status = result.is_counterfeit ? 'COUNTERFEIT DETECTED' : 'APPEARS AUTHENTIC';
+                
+                resultDiv.innerHTML = `
+                    <div class="result ${resultClass}">
+                        <h4 style="margin-bottom: 15px;">${resultIcon} ${status}</h4>
+                        <div class="stats-grid" style="margin-bottom: 20px;">
+                            <div class="stat-item">
+                                <div class="stat-value">${(result.authenticity_score * 100).toFixed(0)}%</div>
+                                <div class="stat-label">Authenticity</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${(result.confidence * 100).toFixed(0)}%</div>
+                                <div class="stat-label">Confidence</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${result.processing_time_ms}</div>
+                                <div class="stat-label">Time (ms)</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">#${result.product_id}</div>
+                                <div class="stat-label">Product ID</div>
+                            </div>
+                        </div>
+                        
+                        <h5 style="color: #FFD700; margin-bottom: 10px;">🤖 AI Analysis:</h5>
+                        <p style="margin-bottom: 15px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; font-style: italic;">${result.ai_analysis}</p>
+                        
+                        <h5 style="color: #FFD700; margin-bottom: 10px;">🔍 Evidence:</h5>
+                        <ul style="margin-bottom: 15px; padding-left: 20px;">
+                            ${result.evidence.map(evidence => `<li>${evidence}</li>`).join('')}
+                        </ul>
+                        
+                        <h5 style="color: #FFD700; margin-bottom: 10px;">💡 Recommendations:</h5>
+                        <ul style="padding-left: 20px;">
+                            ${result.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+
+                        <p style="margin-top: 20px; font-size: 12px; opacity: 0.7;">
+                            <strong>💾 Stored in TiDB Cloud</strong> | Audit trail created with ID ${result.product_id}
+                        </p>
+                    </div>
+                `;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h4>❌ Analysis Failed</h4>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p>The multi-provider AI system may be temporarily unavailable.</p>
+                    </div>
+                `;
+            } finally {
+                analyzeBtn.disabled = false;
+                analyzeBtn.innerHTML = '🤖 Analyze with AI';
+            }
+        });
+
+        // Load initial data when page loads
+        window.addEventListener('load', () => {
+            loadSystemStatus();
+            loadAnalytics();
+            loadTidbStats();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(() => {
+                loadSystemStatus();
+                loadAnalytics();
+            }, 30000);
+        });
+    </script>
 </body>
 </html>""")
 
