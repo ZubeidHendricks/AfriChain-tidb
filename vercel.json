@@ -6,8 +6,8 @@
       "use": "@vercel/python"
     },
     {
-      "src": "public/index.html",
-      "use": "@vercel/static"
+      "src": "api/dashboard.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
@@ -29,7 +29,7 @@
     },
     {
       "src": "/",
-      "dest": "public/index.html"
+      "dest": "api/dashboard.py"
     }
   ],
   "env": {
