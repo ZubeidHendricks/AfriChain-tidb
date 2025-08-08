@@ -13,7 +13,19 @@
       "use": "@vercel/python"
     },
     {
-      "src": "api/hedera/**/*.ts",
+      "src": "api/hedera/ai-studio-agent.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/hedera/natural-language.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/hedera/status.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/hedera/test-connection.ts",
       "use": "@vercel/node"
     }
   ],
