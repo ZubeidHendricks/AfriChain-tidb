@@ -19,12 +19,24 @@
       "dest": "main_tidb.py"
     },
     {
+      "src": "/docs",
+      "dest": "main_tidb.py"
+    },
+    {
+      "src": "/redoc",
+      "dest": "main_tidb.py"
+    },
+    {
       "src": "/health",
       "dest": "main_tidb.py"
     },
     {
       "src": "/dashboard",
       "dest": "main_tidb.py"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
     },
     {
       "src": "/(.*)",
