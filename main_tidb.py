@@ -1082,6 +1082,447 @@ async def health_check():
         }
     }
 
+@app.get("/agents", response_class=HTMLResponse)
+async def visual_agent_showcase():
+    """Visual showcase of live AI agents"""
+    return HTMLResponse(content="""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeriChainX - Live AI Agents Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(0, 255, 127, 0.1) 0%, transparent 50%);
+            animation: backgroundPulse 8s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes backgroundPulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .header {
+            text-align: center;
+            padding: 4rem 2rem 2rem;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #00ff7f, #32cd32);
+            color: #000;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .agent-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 215, 0, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .agent-card:hover::before {
+            left: 100%;
+        }
+
+        .agent-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .agent-icon {
+            font-size: 3rem;
+            margin-right: 1rem;
+        }
+
+        .agent-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .agent-status {
+            display: inline-block;
+            background: #00ff7f;
+            color: #000;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .capabilities {
+            margin: 1.5rem 0;
+        }
+
+        .capabilities h4 {
+            color: #FFA500;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .capability {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 10px;
+            border-left: 3px solid #FFD700;
+            font-size: 0.9rem;
+        }
+
+        .agent-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00ff7f;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #cccccc;
+            margin-top: 0.25rem;
+        }
+
+        .integration-status {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .integration-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #FFD700;
+            margin-bottom: 2rem;
+        }
+
+        .integration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .integration-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .integration-item.connected {
+            border-color: #00ff7f;
+            box-shadow: 0 0 10px rgba(0, 255, 127, 0.2);
+        }
+
+        .demo-section {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%);
+        }
+
+        .demo-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .demo-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: #FFA500;
+        }
+
+        @media (max-width: 768px) {
+            .agents-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .agent-card {
+                padding: 1.5rem;
+            }
+
+            .demo-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 VeriChainX AI Agents</h1>
+        <p class="subtitle">Live Production Agent Ecosystem</p>
+        <span class="status-badge" id="systemStatus">🔄 Loading...</span>
+    </div>
+
+    <div id="agentsContainer" class="loading">
+        <div>Loading live agent data...</div>
+    </div>
+
+    <div class="demo-section">
+        <h2 style="color: #FFD700; margin-bottom: 1rem;">🚀 Try the Agents</h2>
+        <p style="margin-bottom: 2rem; color: #cccccc;">Experience real-time AI counterfeit detection with blockchain verification</p>
+        <div class="demo-buttons">
+            <a href="/dashboard" class="demo-btn">📊 Live Dashboard</a>
+            <a href="/docs" class="demo-btn">📖 API Documentation</a>
+            <a href="/api/v1/agents/showcase" class="demo-btn">🔗 Raw Data</a>
+            <a href="/" class="demo-btn">🏠 Frontend Demo</a>
+        </div>
+    </div>
+
+    <script>
+        async function loadAgents() {
+            try {
+                const response = await fetch('/api/v1/agents/showcase');
+                const data = await response.json();
+                
+                document.getElementById('systemStatus').innerHTML = `✅ ${data.status.replace('_', ' ').toUpperCase()}`;
+                
+                let agentsHTML = '<div class="agents-grid">';
+                
+                // AI Detection Agent
+                const aiAgent = data.live_agents.ai_detection_agent;
+                agentsHTML += `
+                    <div class="agent-card">
+                        <div class="agent-header">
+                            <div class="agent-icon">🧠</div>
+                            <div>
+                                <div class="agent-title">${aiAgent.name}</div>
+                                <div class="agent-status">${aiAgent.status}</div>
+                            </div>
+                        </div>
+                        <div class="capabilities">
+                            <h4>🚀 Capabilities</h4>
+                            ${aiAgent.capabilities.map(cap => `<div class="capability">${cap}</div>`).join('')}
+                        </div>
+                        <div class="agent-stats">
+                            <div class="stat">
+                                <div class="stat-value">${aiAgent.response_time}</div>
+                                <div class="stat-label">Response Time</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${aiAgent.accuracy}</div>
+                                <div class="stat-label">Accuracy</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Hedera Blockchain Agent
+                const hederaAgent = data.live_agents.hedera_blockchain_agent;
+                agentsHTML += `
+                    <div class="agent-card">
+                        <div class="agent-header">
+                            <div class="agent-icon">⛓️</div>
+                            <div>
+                                <div class="agent-title">${hederaAgent.name}</div>
+                                <div class="agent-status">${hederaAgent.status}</div>
+                            </div>
+                        </div>
+                        <div class="capabilities">
+                            <h4>🔗 Capabilities</h4>
+                            ${hederaAgent.capabilities.map(cap => `<div class="capability">${cap}</div>`).join('')}
+                        </div>
+                        <div class="agent-stats">
+                            <div class="stat">
+                                <div class="stat-value">${hederaAgent.account_id}</div>
+                                <div class="stat-label">Account ID</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${hederaAgent.network}</div>
+                                <div class="stat-label">Network</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Natural Language Agent
+                const nlAgent = data.live_agents.natural_language_agent;
+                agentsHTML += `
+                    <div class="agent-card">
+                        <div class="agent-header">
+                            <div class="agent-icon">💬</div>
+                            <div>
+                                <div class="agent-title">${nlAgent.name}</div>
+                                <div class="agent-status">${nlAgent.status}</div>
+                            </div>
+                        </div>
+                        <div class="capabilities">
+                            <h4>🗣️ Example Commands</h4>
+                            ${nlAgent.example_commands.map(cmd => `<div class="capability">"${cmd}"</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+
+                agentsHTML += '</div>';
+
+                // Integration Status
+                agentsHTML += `
+                    <div class="integration-status">
+                        <div class="integration-title">🔧 System Integration</div>
+                        <div class="integration-grid">
+                            ${Object.entries(data.integration_status).map(([key, value]) => `
+                                <div class="integration-item connected">
+                                    <div style="font-weight: bold; margin-bottom: 0.5rem;">${key.replace('_', ' ').toUpperCase()}</div>
+                                    <div style="font-size: 0.8rem; color: #cccccc;">${value}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('agentsContainer').innerHTML = agentsHTML;
+                
+            } catch (error) {
+                document.getElementById('agentsContainer').innerHTML = `
+                    <div style="text-align: center; color: #ff6b6b; padding: 2rem;">
+                        <h3>❌ Failed to load agents</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load agents on page load
+        loadAgents();
+        
+        // Refresh every 30 seconds
+        setInterval(loadAgents, 30000);
+    </script>
+</body>
+</html>""")
+
 @app.post("/api/v1/products/analyze", response_model=AnalysisResponse, tags=["products"])
 async def analyze_product(request: ProductAnalysisRequest, background_tasks: BackgroundTasks):
     """Analyze product for counterfeit detection using AI + TiDB"""
