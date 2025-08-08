@@ -31,10 +31,6 @@
       "dest": "/index.html"
     }
   ],
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev", 
-  "installCommand": "npm install",
-  "outputDirectory": "dist",
   "env": {
     "VITE_API_BASE_URL": "https://verichain-x-hedera.vercel.app",
     "NODE_ENV": "production",
