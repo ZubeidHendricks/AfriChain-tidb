@@ -1082,15 +1082,15 @@ async def health_check():
         }
     }
 
-@app.get("/demo", response_class=HTMLResponse)
-async def live_demo_page():
-    """Interactive step-by-step demo of VeriChainX system"""
+@app.get("/analyze", response_class=HTMLResponse)
+async def live_analysis_page():
+    """Interactive step-by-step analysis of VeriChainX system"""
     return HTMLResponse(content="""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VeriChainX Live Demo - Real Product Analysis</title>
+    <title>VeriChainX - Real Product Analysis</title>
     <style>
         * {
             margin: 0;
@@ -1106,18 +1106,18 @@ async def live_demo_page():
             overflow-x: hidden;
         }
         
-        .demo-container {
+        .analysis-container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
         }
         
-        .demo-header {
+        .analysis-header {
             text-align: center;
             margin-bottom: 3rem;
         }
         
-        .demo-title {
+        .analysis-title {
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 900;
             background: linear-gradient(45deg, #FFD700, #FF6B6B, #4ECDC4);
@@ -1128,13 +1128,13 @@ async def live_demo_page():
             line-height: 1.1;
         }
         
-        .demo-subtitle {
+        .analysis-subtitle {
             font-size: 1.2rem;
             color: #cccccc;
             margin-bottom: 2rem;
         }
         
-        .demo-layout {
+        .analysis-layout {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 2rem;
@@ -1204,6 +1204,7 @@ async def live_demo_page():
             cursor: pointer;
             font-size: 0.8rem;
             transition: all 0.3s ease;
+            border: none;
         }
         
         .preset-btn:hover {
@@ -1336,20 +1337,20 @@ async def live_demo_page():
         }
         
         @media (max-width: 768px) {
-            .demo-layout {
+            .analysis-layout {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <div class="demo-container">
-        <div class="demo-header">
-            <h1 class="demo-title">🚀 VeriChainX Live Demo</h1>
-            <p class="demo-subtitle">Watch AI agents detect counterfeits in real-time with blockchain verification</p>
+    <div class="analysis-container">
+        <div class="analysis-header">
+            <h1 class="analysis-title">🚀 VeriChainX AI Analysis</h1>
+            <p class="analysis-subtitle">AI agents detect counterfeits in real-time with blockchain verification</p>
         </div>
         
-        <div class="demo-layout">
+        <div class="analysis-layout">
             <div class="product-input-section">
                 <h3 style="margin-bottom: 1rem; color: #FFD700;">🎯 Product Analysis</h3>
                 
@@ -1561,8 +1562,8 @@ async def live_demo_page():
                 category: document.getElementById('category').value,
                 seller_rating: parseFloat(document.getElementById('sellerRating').value),
                 description: document.getElementById('description').value,
-                marketplace: 'demo',
-                product_url: 'https://demo-marketplace.com/product',
+                marketplace: 'analysis',
+                product_url: 'https://marketplace.com/product',
                 images: [],
                 total_reviews: Math.floor(Math.random() * 1000) + 50
             };
@@ -1609,55 +1610,50 @@ async def live_demo_page():
                 
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('step5Content').innerHTML = `
-                    <div style="color: #FF6B6B;">
-                        ❌ Analysis failed: \${error.message}
-                    </div>
-                `;
+                document.getElementById('step5Content').innerHTML = 
+                    '<div style="color: #FF6B6B;">' +
+                        '❌ Analysis failed: ' + error.message +
+                    '</div>';
             }
         }
         
         async function showStep(stepNumber) {
-            const step = document.getElementById(`step\${stepNumber}`);
+            const step = document.getElementById('step' + stepNumber);
             step.classList.add('active');
             
             // Update step content based on step number
             if (stepNumber === 1) {
                 await delay(1500);
-                document.getElementById('step1Content').innerHTML = `
-                    <div style="color: #4ECDC4;">
-                        ✅ GPT-4 analysis complete<br>
-                        🔍 Detected suspicious pricing patterns<br>
-                        🎯 Category-specific rules applied
-                    </div>
-                `;
+                document.getElementById('step1Content').innerHTML = 
+                    '<div style="color: #4ECDC4;">' +
+                        '✅ GPT-4 analysis complete<br>' +
+                        '🔍 Detected suspicious pricing patterns<br>' +
+                        '🎯 Category-specific rules applied' +
+                    '</div>';
             } else if (stepNumber === 2) {
                 await delay(1500);
-                document.getElementById('step2Content').innerHTML = `
-                    <div style="color: #4ECDC4;">
-                        ✅ Market price comparison complete<br>
-                        📊 Price deviation calculated<br>
-                        💰 Risk factors identified
-                    </div>
-                `;
+                document.getElementById('step2Content').innerHTML = 
+                    '<div style="color: #4ECDC4;">' +
+                        '✅ Market price comparison complete<br>' +
+                        '📊 Price deviation calculated<br>' +
+                        '💰 Risk factors identified' +
+                    '</div>';
             } else if (stepNumber === 3) {
                 await delay(1500);
-                document.getElementById('step3Content').innerHTML = `
-                    <div style="color: #4ECDC4;">
-                        ✅ Seller profile analyzed<br>
-                        ⭐ Rating and review history checked<br>
-                        🚨 Risk indicators flagged
-                    </div>
-                `;
+                document.getElementById('step3Content').innerHTML = 
+                    '<div style="color: #4ECDC4;">' +
+                        '✅ Seller profile analyzed<br>' +
+                        '⭐ Rating and review history checked<br>' +
+                        '🚨 Risk indicators flagged' +
+                    '</div>';
             } else if (stepNumber === 4) {
                 await delay(1200);
-                document.getElementById('step4Content').innerHTML = `
-                    <div style="color: #4ECDC4;">
-                        ✅ Hedera blockchain transaction submitted<br>
-                        🔗 Immutable audit trail created<br>
-                        📝 Analysis logged to HCS
-                    </div>
-                `;
+                document.getElementById('step4Content').innerHTML = 
+                    '<div style="color: #4ECDC4;">' +
+                        '✅ Hedera blockchain transaction submitted<br>' +
+                        '🔗 Immutable audit trail created<br>' +
+                        '📝 Analysis logged to HCS' +
+                    '</div>';
             }
         }
         
@@ -1666,42 +1662,44 @@ async def live_demo_page():
             const riskColor = riskLevel === 'high' ? '#FF6B6B' : riskLevel === 'medium' ? '#FFD700' : '#4ECDC4';
             const riskEmoji = riskLevel === 'high' ? '🚨' : riskLevel === 'medium' ? '⚠️' : '✅';
             
-            document.getElementById('step5Content').innerHTML = `
-                <div class="result-card">
-                    <h4 style="color: \${riskColor}; margin-bottom: 1rem;">\${riskEmoji} Analysis Complete</h4>
+            const redFlagsHtml = result.red_flags && result.red_flags.length > 0 
+                ? result.red_flags.map(flag => '<li>' + flag + '</li>').join('') 
+                : '<li>No major red flags detected</li>';
+            
+            const blockchainHashHtml = result.blockchain_hash 
+                ? '<div style="margin-top: 1rem;"><strong style="color: #4ECDC4;">Blockchain Hash:</strong><div class="blockchain-hash">' + result.blockchain_hash + '</div></div>'
+                : '';
+            
+            document.getElementById('step5Content').innerHTML = 
+                '<div class="result-card">' +
+                    '<h4 style="color: ' + riskColor + '; margin-bottom: 1rem;">' + riskEmoji + ' Analysis Complete</h4>' +
                     
-                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                        <span style="margin-right: 1rem;">Risk Score:</span>
-                        <span class="risk-score risk-\${riskLevel}">\${result.overall_risk_score}/100</span>
-                    </div>
+                    '<div style="display: flex; align-items: center; margin-bottom: 1rem;">' +
+                        '<span style="margin-right: 1rem;">Risk Score:</span>' +
+                        '<span class="risk-score risk-' + riskLevel + '">' + result.overall_risk_score + '/100</span>' +
+                    '</div>' +
                     
-                    <div style="margin-bottom: 1rem;">
-                        <strong style="color: #FFD700;">Key Findings:</strong>
-                        <ul style="margin: 0.5rem 0 0 1rem; color: #cccccc;">
-                            \${result.red_flags?.map(flag => `<li>\${flag}</li>`).join('') || '<li>No major red flags detected</li>'}
-                        </ul>
-                    </div>
+                    '<div style="margin-bottom: 1rem;">' +
+                        '<strong style="color: #FFD700;">Key Findings:</strong>' +
+                        '<ul style="margin: 0.5rem 0 0 1rem; color: #cccccc;">' +
+                            redFlagsHtml +
+                        '</ul>' +
+                    '</div>' +
                     
-                    <div style="margin-bottom: 1rem;">
-                        <strong style="color: #FFD700;">AI Recommendation:</strong>
-                        <p style="color: #cccccc; margin-top: 0.5rem;">\${result.recommendation || 'Analysis complete'}</p>
-                    </div>
+                    '<div style="margin-bottom: 1rem;">' +
+                        '<strong style="color: #FFD700;">AI Recommendation:</strong>' +
+                        '<p style="color: #cccccc; margin-top: 0.5rem;">' + (result.recommendation || 'Analysis complete') + '</p>' +
+                    '</div>' +
                     
-                    \${result.blockchain_hash ? `
-                        <div style="margin-top: 1rem;">
-                            <strong style="color: #4ECDC4;">Blockchain Hash:</strong>
-                            <div class="blockchain-hash">\${result.blockchain_hash}</div>
-                        </div>
-                    ` : ''}
+                    blockchainHashHtml +
                     
-                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(78, 205, 196, 0.1); border-radius: 8px; border: 1px solid rgba(78, 205, 196, 0.3);">
-                        <div style="color: #4ECDC4; font-weight: bold;">✅ Verification Complete</div>
-                        <div style="color: #cccccc; font-size: 0.9rem; margin-top: 0.5rem;">
-                            Analysis logged to Hedera blockchain • Response time: \${result.response_time || '2.3s'} • Confidence: \${result.confidence || '94%'}
-                        </div>
-                    </div>
-                </div>
-            `;
+                    '<div style="margin-top: 1rem; padding: 1rem; background: rgba(78, 205, 196, 0.1); border-radius: 8px; border: 1px solid rgba(78, 205, 196, 0.3);">' +
+                        '<div style="color: #4ECDC4; font-weight: bold;">✅ Verification Complete</div>' +
+                        '<div style="color: #cccccc; font-size: 0.9rem; margin-top: 0.5rem;">' +
+                            'Analysis logged to Hedera blockchain • Response time: ' + (result.response_time || '2.3s') + ' • Confidence: ' + (result.confidence || '94%') +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
         }
         
         function delay(ms) {
