@@ -7,20 +7,40 @@
       "config": {
         "distDir": "dist"
       }
+    },
+    {
+      "src": "main_tidb.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "main_tidb.py"
+    },
+    {
+      "src": "/health",
+      "dest": "main_tidb.py"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "main_tidb.py"
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"
     }
   ],
   "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
+  "devCommand": "npm run dev", 
   "installCommand": "npm install",
   "outputDirectory": "dist",
   "env": {
     "VITE_API_BASE_URL": "https://verichain-x-hedera.vercel.app",
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "PYTHONPATH": ".",
+    "ENVIRONMENT": "production",
+    "DEBUG": "false",
+    "HACKATHON_MODE": "true"
   }
 }
