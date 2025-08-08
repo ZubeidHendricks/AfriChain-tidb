@@ -17,6 +17,8 @@ import openai
 from dotenv import load_dotenv
 import asyncio
 import logging
+import aiohttp
+import requests
 
 # Load environment variables
 load_dotenv()
@@ -79,6 +81,62 @@ def get_tidb_connection():
     """Get TiDB Cloud connection"""
     return pymysql.connect(**TIDB_CONFIG)
 
+# Hedera AI Studio Integration
+async def integrate_hedera_agents(analysis_result: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Integrate with Hedera AI Studio agents for blockchain verification and NFT minting
+    """
+    try:
+        # Get base URL for Hedera agents
+        base_url = os.getenv('VERCEL_URL', 'https://verichain-x-hedera.vercel.app')
+        
+        # Prepare data for Hedera AI Studio agent
+        agent_request = {
+            "action": "analyze_product",
+            "data": {
+                "product_id": analysis_result.get("product_id"),
+                "product_name": analysis_result.get("product_name", "Unknown"),
+                "authenticity_score": analysis_result.get("authenticity_score", 0.5),
+                "is_counterfeit": analysis_result.get("is_counterfeit", True),
+                "evidence": analysis_result.get("evidence", []),
+                "ai_analysis": analysis_result.get("ai_analysis", ""),
+                "seller_info": analysis_result.get("seller_info", {})
+            }
+        }
+        
+        # Call Hedera AI Studio agent
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                f"{base_url}/api/hedera/ai-studio-agent",
+                json=agent_request,
+                headers={"Content-Type": "application/json"},
+                timeout=aiohttp.ClientTimeout(total=30)
+            ) as response:
+                if response.status == 200:
+                    hedera_result = await response.json()
+                    
+                    # Enhance analysis result with Hedera data
+                    if hedera_result.get("success"):
+                        result = hedera_result.get("result", {})
+                        analysis_result["blockchain_audit_id"] = hedera_result.get("hcs_transaction_id")
+                        analysis_result["verification_url"] = hedera_result.get("verification_url")
+                        analysis_result["nft_certificate"] = result.get("nft_certificate")
+                        analysis_result["hedera_nft_ready"] = bool(result.get("nft_certificate"))
+                        
+                        logger.info(f"Successfully integrated with Hedera agents for product {analysis_result.get('product_id')}")
+                        
+                    return analysis_result
+                else:
+                    logger.warning(f"Hedera agent call failed with status {response.status}")
+                    return analysis_result
+                    
+    except asyncio.TimeoutError:
+        logger.warning("Hedera agent integration timed out")
+        return analysis_result
+    except Exception as e:
+        logger.error(f"Hedera agent integration failed: {str(e)}")
+        return analysis_result
+
 # Pydantic models
 class ProductAnalysisRequest(BaseModel):
     product_name: str
@@ -98,6 +156,9 @@ class AnalysisResponse(BaseModel):
     recommendations: List[str]
     processing_time_ms: int
     hedera_nft_ready: bool = False
+    blockchain_audit_id: Optional[str] = None
+    nft_certificate: Optional[Dict[str, Any]] = None
+    verification_url: Optional[str] = None
 
 class ProductSummary(BaseModel):
     id: int
@@ -1087,8 +1148,19 @@ async def analyze_product(request: ProductAnalysisRequest, background_tasks: Bac
         
         logger.info(f"Product {product_id} analyzed and stored in TiDB")
         
-        # TODO: Background task for Hedera NFT minting
-        # background_tasks.add_task(mint_hedera_nft, product_id, ai_result)
+        # Step 3: Integrate with Hedera AI Studio agents
+        enhanced_result = {
+            "product_id": product_id,
+            "product_name": request.product_name,
+            "authenticity_score": ai_result["authenticity_score"],
+            "is_counterfeit": ai_result["is_counterfeit"],
+            "evidence": ai_result["evidence"],
+            "ai_analysis": ai_result["reasoning"],
+            "seller_info": request.seller_info or {}
+        }
+        
+        # Enhance with Hedera blockchain integration
+        enhanced_result = await integrate_hedera_agents(enhanced_result)
         
         return AnalysisResponse(
             product_id=product_id,
@@ -1099,7 +1171,10 @@ async def analyze_product(request: ProductAnalysisRequest, background_tasks: Bac
             evidence=ai_result["evidence"],
             recommendations=ai_result["recommendations"],
             processing_time_ms=processing_time,
-            hedera_nft_ready=False  # Will be true after background task
+            hedera_nft_ready=enhanced_result.get("hedera_nft_ready", False),
+            blockchain_audit_id=enhanced_result.get("blockchain_audit_id"),
+            nft_certificate=enhanced_result.get("nft_certificate"),
+            verification_url=enhanced_result.get("verification_url")
         )
         
     except Exception as e:
