@@ -30,28 +30,27 @@ app = FastAPI(
     title="VeriChainX - AI Counterfeit Detection System",
     description="AI-Powered Counterfeit Detection System using TiDB Cloud HTAP, Hedera Hashgraph, and Multi-Provider AI for hackathon demonstrations",
     version="2.0.0",
-    openapi_version="3.1.0",
     docs_url="/docs",
     redoc_url="/redoc",
-    openapi_tags=[
-        {
-            "name": "products",
-            "description": "Product analysis and counterfeit detection operations",
-        },
-        {
-            "name": "analytics",
-            "description": "Dashboard analytics and reporting",
-        },
-        {
-            "name": "system",
-            "description": "System health and information endpoints",
-        },
-        {
-            "name": "tidb",
-            "description": "TiDB Cloud specific operations and statistics",
-        },
-    ],
 )
+
+# Fix OpenAPI schema version
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    
+    from fastapi.openapi.utils import get_openapi
+    openapi_schema = get_openapi(
+        title="VeriChainX - AI Counterfeit Detection System",
+        version="2.0.0",
+        description="AI-Powered Counterfeit Detection System using TiDB Cloud HTAP, Hedera Hashgraph, and Multi-Provider AI",
+        routes=app.routes,
+    )
+    openapi_schema["openapi"] = "3.1.0"
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+app.openapi = custom_openapi
 
 # CORS middleware for hackathon demo
 app.add_middleware(

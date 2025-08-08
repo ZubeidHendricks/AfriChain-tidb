@@ -13,11 +13,12 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 
 const HeroContainer = styled(Box)(({ theme }) => ({
   minHeight: '100vh',
-  background: `linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)`,
-  backgroundImage: `url("https://images.unsplash.com/photo-1698153561367-e1a0780e5a66?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHw2fHxhYnN0cmFjdCUyMGdlb21ldHJpYyUyMGdyYWRpZW50JTIwbHV4dXJ5fGVufDB8MHx8fDE3NTQ1OTgzMDJ8MA&ixlib=rb-4.1.0&q=85")`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundBlendMode: 'overlay',
+  background: `
+    radial-gradient(circle at 30% 20%, rgba(255, 215, 0, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 70% 80%, rgba(255, 165, 0, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(255, 215, 0, 0.08) 0%, transparent 30%),
+    linear-gradient(135deg, #000000 0%, #1a1a1a 30%, #2d2d2d 60%, #1a1a1a 90%, #000000 100%)
+  `,
   display: 'flex',
   alignItems: 'center',
   position: 'relative',
@@ -29,7 +30,20 @@ const HeroContainer = styled(Box)(({ theme }) => ({
     left: 0,
     right: 0,
     bottom: 0,
-    background: 'radial-gradient(circle at 30% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%)',
+    background: `
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 98px,
+        rgba(255, 215, 0, 0.03) 100px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 98px,
+        rgba(255, 215, 0, 0.03) 100px
+      )
+    `,
     pointerEvents: 'none',
   },
   '&::after': {
@@ -39,7 +53,9 @@ const HeroContainer = styled(Box)(({ theme }) => ({
     left: 0,
     right: 0,
     bottom: 0,
-    background: 'radial-gradient(circle at 70% 80%, rgba(255, 165, 0, 0.08) 0%, transparent 50%)',
+    background: 'linear-gradient(45deg, rgba(255, 215, 0, 0.05) 25%, transparent 25%, transparent 75%, rgba(255, 215, 0, 0.05) 75%)',
+    backgroundSize: '60px 60px',
+    opacity: 0.3,
     pointerEvents: 'none',
   },
 }));
