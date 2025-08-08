@@ -28,10 +28,29 @@ logger = logging.getLogger(__name__)
 # Initialize FastAPI app
 app = FastAPI(
     title="VeriChainX - AI Counterfeit Detection System",
-    description="Powered by TiDB Cloud HTAP + Hedera Hashgraph + OpenAI GPT-4",
+    description="AI-Powered Counterfeit Detection System using TiDB Cloud HTAP, Hedera Hashgraph, and Multi-Provider AI for hackathon demonstrations",
     version="2.0.0",
+    openapi_version="3.1.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    openapi_tags=[
+        {
+            "name": "products",
+            "description": "Product analysis and counterfeit detection operations",
+        },
+        {
+            "name": "analytics",
+            "description": "Dashboard analytics and reporting",
+        },
+        {
+            "name": "system",
+            "description": "System health and information endpoints",
+        },
+        {
+            "name": "tidb",
+            "description": "TiDB Cloud specific operations and statistics",
+        },
+    ],
 )
 
 # CORS middleware for hackathon demo
@@ -203,8 +222,8 @@ async def analyze_with_openai_original(product_data: ProductAnalysisRequest) -> 
     }
 
 # API Endpoints
-@app.get("/api")
-@app.get("/api/")
+@app.get("/api", tags=["system"])
+@app.get("/api/", tags=["system"])
 async def api_info():
     """API information and status"""
     return {
@@ -969,7 +988,7 @@ async def admin_dashboard():
 </body>
 </html>""")
 
-@app.get("/health")
+@app.get("/health", tags=["system"])
 async def health_check():
     """System health check"""
     
@@ -1003,7 +1022,7 @@ async def health_check():
         }
     }
 
-@app.post("/api/v1/products/analyze", response_model=AnalysisResponse)
+@app.post("/api/v1/products/analyze", response_model=AnalysisResponse, tags=["products"])
 async def analyze_product(request: ProductAnalysisRequest, background_tasks: BackgroundTasks):
     """Analyze product for counterfeit detection using AI + TiDB"""
     
@@ -1088,7 +1107,7 @@ async def analyze_product(request: ProductAnalysisRequest, background_tasks: Bac
         logger.error(f"Analysis failed: {e}")
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
-@app.get("/api/v1/products", response_model=List[ProductSummary])
+@app.get("/api/v1/products", response_model=List[ProductSummary], tags=["products"])
 async def get_products(limit: int = 10, counterfeit_only: bool = False):
     """Get analyzed products from TiDB"""
     
@@ -1129,7 +1148,7 @@ async def get_products(limit: int = 10, counterfeit_only: bool = False):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
-@app.get("/api/v1/analytics/dashboard")
+@app.get("/api/v1/analytics/dashboard", tags=["analytics"])
 async def get_dashboard_analytics():
     """Real-time analytics using TiDB HTAP capabilities"""
     
@@ -1194,7 +1213,7 @@ async def get_dashboard_analytics():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
 
-@app.get("/api/v1/tidb/stats")
+@app.get("/api/v1/tidb/stats", tags=["tidb"])
 async def get_tidb_stats():
     """TiDB Cloud specific statistics and capabilities"""
     
