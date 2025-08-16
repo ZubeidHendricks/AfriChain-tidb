@@ -1,0 +1,104 @@
+version: '3.8'
+
+services:
+  # AfriChain Authentication Service
+  auth-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: africhain-auth-service
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - REDIS_URL=redis://redis:6379
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - HASH_SECRET=${HASH_SECRET}
+      - AFRICASTALKING_API_KEY=${AFRICASTALKING_API_KEY}
+      - AFRICASTALKING_USERNAME=${AFRICASTALKING_USERNAME:-sandbox}
+      - SMS_SENDER_ID=${SMS_SENDER_ID:-AfriChain}
+    depends_on:
+      - redis
+    networks:
+      - africhain-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - auth-logs:/app/logs
+
+  # Redis for session management and rate limiting
+  redis:
+    image: redis:7-alpine
+    container_name: africhain-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
+    networks:
+      - africhain-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - redis-data:/data
+
+  # Optional: Redis Commander for debugging
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    environment:
+      - REDIS_HOSTS=redis:redis:6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - africhain-network
+    profiles:
+      - debug
+
+  # Optional: Database migration service
+  migration:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    container_name: africhain-migration
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    command: ["npm", "run", "migrate"]
+    networks:
+      - africhain-network
+    profiles:
+      - migration
+
+networks:
+  africhain-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local
+  auth-logs:
+    driver: local

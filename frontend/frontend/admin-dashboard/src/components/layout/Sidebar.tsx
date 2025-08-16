@@ -30,6 +30,8 @@ import {
   Group as SuppliersIcon,
   Rule as RulesIcon,
   Timeline as ActivityIcon,
+  Storefront as CatalogIcon,
+  QrCodeScanner as QRVerifyIcon,
 } from '@mui/icons-material';
 
 interface NavigationItem {
@@ -51,6 +53,18 @@ const navigationItems: NavigationItem[] = [
     label: 'Dashboard',
     icon: DashboardIcon,
     path: '/',
+  },
+  {
+    id: 'catalog',
+    label: 'Product Catalog',
+    icon: CatalogIcon,
+    path: '/catalog',
+  },
+  {
+    id: 'verify',
+    label: 'QR Verification',
+    icon: QRVerifyIcon,
+    path: '/verify',
   },
   {
     id: 'products',

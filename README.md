@@ -1,397 +1,722 @@
-# 🛡️ Agentic Counterfeit Detection System
+# 🌐 VeriChainX + AfriChain - Complete Blockchain Authenticity Ecosystem
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8+-blue.svg)](https://soliditylang.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-00a393.svg)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-18+-61dafb.svg)](https://reactjs.org)
+[![Hedera](https://img.shields.io/badge/Hedera-Network-purple.svg)](https://hedera.com)
 
-An enterprise-grade AI-powered counterfeit detection system that uses multi-agent orchestration, vector embeddings, LLM analysis, and zkSNARK cryptographic proofs to identify and prevent counterfeit products across e-commerce platforms.
+## 🏗️ Two-Tier Architecture Overview
+
+This repository contains both the **VeriChainX protocol infrastructure** and the **AfriChain consumer application** that demonstrates how to build on top of VeriChainX.
+
+### 🔧 VeriChainX Protocol Layer
+The foundational blockchain infrastructure providing:
+- **Smart Contract Suite** - Complete authenticity verification protocols
+- **DeFi Integration** - AMM, lending, staking, and DEX functionality  
+- **Cross-Chain Bridge** - Multi-blockchain interoperability
+- **DAO Governance** - Decentralized protocol management
+- **Token Factory** - Dynamic token creation and management
+
+### 🌍 AfriChain Application Layer  
+A comprehensive consumer application built on VeriChainX, specifically designed for African artisans and small-scale manufacturers with enterprise-grade product authenticity verification, multi-channel authentication, QR code verification, and integrated payment solutions supporting both HBAR and M-Pesa.
 
 ## 🚀 Key Features
 
-### Core Detection Capabilities
-- **🤖 Multi-Agent AI System** - Orchestrated AI agents for comprehensive analysis
-- **🔍 LLM-Powered Analysis** - Advanced authenticity scoring using Claude/GPT models  
-- **📊 Vector Embedding Search** - Semantic similarity detection for product matching
-- **⚡ Rule-Based Detection** - Dynamic rule engine for rapid identification
-- **📱 Real-Time Monitoring** - Continuous marketplace surveillance
+### 🔐 Multi-Channel Authentication
+- **📱 Phone Number Registration** - Secure phone-based account creation with OTP verification
+- **🔑 JWT Token Management** - Secure session management with refresh token rotation  
+- **📞 USSD Integration** - Feature phone support for rural African markets
+- **📧 SMS & Email Support** - Multi-channel communication for maximum reach
+- **🔄 Cross-Channel Session Coordination** - Seamless experience across all touchpoints
 
-### Enterprise Security
-- **🔐 zkSNARK Cryptographic Proofs** - Zero-knowledge proof verification for maximum security
-- **🔗 Immutable Audit Trails** - Blockchain-anchored audit logs with Merkle tree verification
-- **📋 Regulatory Compliance** - SOC 2, GDPR, and industry compliance reporting
-- **🏢 Enterprise Integration** - ServiceNow GRC, SAP GRC, MetricStream connectivity
+### 🏷️ Product Registration & Verification
+- **🌐 IPFS Metadata Storage** - Decentralized product information storage
+- **🎫 Hedera NFT Minting** - Blockchain-backed authenticity certificates
+- **📱 QR Code Generation** - Dynamic QR codes for instant product verification
+- **📚 Product Catalog Management** - Comprehensive inventory and metadata management
+- **🔍 Real-Time Verification** - Instant blockchain verification through QR scanning
 
-### Advanced Features
-- **🏪 Brand Registration System** - Verified brand portal with document management
-- **📧 Multi-Channel Alerts** - Email, SMS, Slack, webhook notifications
-- **⚖️ Automated Enforcement** - Takedown requests with appeals workflow
-- **📈 Analytics Dashboard** - Real-time metrics and performance monitoring
-- **🔄 High-Performance Caching** - Redis-backed proof verification optimization
+### 💰 Integrated Payment Solutions
+- **💎 HBAR Payment Processing** - Native Hedera cryptocurrency payments
+- **📱 M-Pesa Integration** - Popular African mobile money solution
+- **🔄 Real-Time Exchange Rates** - Dynamic USD/HBAR/KES conversion
+- **📊 Payment Status Tracking** - Comprehensive transaction monitoring
+- **🧾 Automated Receipts** - Multi-format payment confirmations
 
-## 🏗️ Architecture Overview
+### 🛡️ Advanced Security & Fraud Detection
+- **🔗 Blockchain Verification** - Immutable authenticity records on Hedera
+- **🤖 AI-Powered Fraud Detection** - Machine learning pattern recognition
+- **📈 Real-Time Analytics** - Comprehensive fraud monitoring dashboard
+- **⚠️ Automated Alerting** - Instant notifications for suspicious activities
+- **🔍 Verification Results Display** - Clear authenticity status presentation
+
+### 📱 Enterprise Admin Dashboard
+- **📊 Analytics & Insights** - Real-time business intelligence
+- **🏪 Product Management** - Comprehensive inventory control
+- **📋 Activity Monitoring** - Complete audit trail visibility
+- **👥 User Management** - Role-based access control
+- **🔧 System Configuration** - Flexible platform customization
+
+## 🏗️ Combined Architecture Overview
 
 ```mermaid
 graph TB
-    subgraph "Frontend Layer"
-        UI[Admin Dashboard UI]
-        Mobile[Mobile App]
+    subgraph "AfriChain Application Layer"
+        subgraph "Frontend"
+            Admin[Admin Dashboard - React/TypeScript]
+            Mobile[Mobile Interface - PWA]
+            QR[QR Scanner Interface]
+            Landing[VeriChainX Landing Page]
+        end
+        
+        subgraph "API Services"
+            Auth[Auth Service - Node.js/TypeScript]
+            Hedera[Hedera Service - Node.js/TypeScript]
+            API[Core API - Python/FastAPI]
+        end
+        
+        subgraph "AfriChain Features"
+            SMS[SMS Service - Africa's Talking]
+            USSD[USSD Gateway]
+            MPESA[M-Pesa Gateway]
+            Exchange[Exchange Rate API]
+        end
     end
     
-    subgraph "API Layer"
-        API[FastAPI REST API]
-        WS[WebSocket Gateway]
+    subgraph "VeriChainX Protocol Layer"
+        subgraph "Smart Contracts"
+            AuthVerifier[VeriChainXAuthenticityVerifier.sol]
+            TokenFactory[VeriChainXTokenFactory.sol]
+            Governance[VeriChainXGovernance.sol]
+            Treasury[VeriChainXDAOTreasury.sol]
+        end
+        
+        subgraph "DeFi Protocols"
+            AMM[VeriChainXAuthenticityAMM.sol]
+            DEX[VeriChainXDEX.sol]
+            Lending[VeriChainXLending.sol]
+            Staking[VeriChainXStaking.sol]
+        end
+        
+        subgraph "Cross-Chain Infrastructure"
+            Bridge[VeriChainXCrossChainBridge.sol]
+            Relay[VeriChainXBridgeRelay.sol]
+            AuthToken[VeriChainXAuthenticityToken.sol]
+        end
     end
     
-    subgraph "Agent Layer"
-        Orch[Orchestrator Agent]
-        Auth[Authenticity Analyzer]
-        Rules[Rule Engine]
-        Notif[Notification Agent]
-        Enf[Enforcement Agent]
+    subgraph "Hedera Network Infrastructure"
+        HCS[Hedera Consensus Service]
+        HTS[Hedera Token Service]
+        HSCS[Hedera Smart Contract Service]
+        IPFS[IPFS Storage]
     end
     
-    subgraph "Services Layer"
-        ZK[zkSNARK Service]
-        Embed[Embedding Service]
-        Brand[Brand Service]
-        Audit[Audit Trail Service]
-        Cache[Proof Cache]
-    end
-    
-    subgraph "Data Layer"
-        PG[(PostgreSQL)]
-        Vec[(Vector DB)]
+    subgraph "Data & Cache Layer"
+        PG[(PostgreSQL + pgvector)]
         Redis[(Redis Cache)]
-        BC[Blockchain Anchor]
+        TiDB[(TiDB Serverless)]
     end
     
-    UI --> API
-    Mobile --> API
-    API --> Orch
-    Orch --> Auth
-    Orch --> Rules
-    Orch --> Notif
-    Orch --> Enf
-    Auth --> ZK
-    Auth --> Embed
-    Services --> PG
-    Services --> Vec
-    Services --> Redis
-    Audit --> BC
+    %% AfriChain to VeriChainX connections
+    Admin --> Auth
+    Mobile --> Auth
+    QR --> Hedera
+    Auth --> AuthVerifier
+    Hedera --> TokenFactory
+    API --> Governance
+    
+    %% VeriChainX to Hedera connections
+    AuthVerifier --> HSCS
+    TokenFactory --> HTS
+    AMM --> HSCS
+    Bridge --> HSCS
+    
+    %% Infrastructure connections
+    HSCS --> HCS
+    Auth --> PG
+    Auth --> Redis
+    Hedera --> IPFS
+    API --> TiDB
+    
+    %% AfriChain specific integrations
+    MPESA --> Exchange
+    SMS --> Auth
+    USSD --> Auth
 ```
 
 ## 🛠️ Tech Stack
 
-### Backend
-- **Python 3.11+** - Core application runtime
-- **FastAPI** - High-performance async web framework
-- **SQLAlchemy 2.0** - Modern async ORM
-- **PostgreSQL 15+** - Primary database with vector extensions
-- **Redis 7+** - Caching and session management
-- **Celery** - Distributed task processing
+### VeriChainX Protocol Layer
+- **Solidity 0.8+** - Smart contract development for authenticity verification
+- **Hardhat** - Development environment and testing framework
+- **OpenZeppelin** - Security-audited contract libraries
+- **VeriChainX Smart Contracts**:
+  - `VeriChainXAuthenticityVerifier.sol` - Core verification logic
+  - `VeriChainXTokenFactory.sol` - Dynamic token creation
+  - `VeriChainXGovernance.sol` - DAO governance mechanisms
+  - `VeriChainXAuthenticityAMM.sol` - Automated market maker for authenticity tokens
+  - `VeriChainXDEX.sol` - Decentralized exchange
+  - `VeriChainXCrossChainBridge.sol` - Multi-chain interoperability
 
-### AI & ML
-- **OpenAI GPT-4** - Primary LLM for authenticity analysis
-- **Anthropic Claude** - Secondary LLM for analysis diversity
-- **Sentence Transformers** - Vector embeddings generation
-- **pgvector** - Vector similarity search in PostgreSQL
+### AfriChain Application Services  
+- **Node.js/TypeScript** - Auth & Hedera services with modern async patterns
+- **Python 3.11+/FastAPI** - Core API services and AI agents
+- **PostgreSQL 15+** - Primary database with pgvector for embeddings
+- **TiDB Serverless** - Scalable cloud database for analytics
+- **Redis 7+** - Caching, sessions, and real-time features
 
-### Cryptographic Security
-- **Circom 2.0** - zkSNARK circuit development
-- **snarkjs** - Proof generation and verification
-- **Web3.py** - Blockchain integration for audit anchoring
-- **cryptography** - Enterprise-grade cryptographic operations
+### Blockchain & Distributed Storage
+- **Hedera Hashgraph** - Primary blockchain network for smart contracts and consensus
+- **Hedera Smart Contract Service (HSCS)** - EVM-compatible smart contract execution
+- **Hedera Token Service (HTS)** - Native token creation and management
+- **Hedera SDK** - JavaScript SDK for seamless blockchain integration
+- **IPFS** - Decentralized metadata and image storage
+- **Hedera Mirror Node** - Transaction history and analytics
 
-### Frontend
-- **React 18** - Modern UI framework
-- **TypeScript** - Type-safe development
-- **Vite** - Fast build tooling
-- **Tailwind CSS** - Utility-first styling
-- **Recharts** - Data visualization
+### Payment & Communication
+- **M-Pesa API** - African mobile money integration
+- **HBAR** - Native Hedera cryptocurrency processing
+- **Africa's Talking** - SMS, voice, and USSD services
+- **Real-time Exchange Rates** - Multi-currency conversion APIs
+- **WebSocket** - Real-time payment status updates
 
-### DevOps & Infrastructure
-- **Docker & Docker Compose** - Containerization
-- **Kubernetes** - Container orchestration
-- **GitHub Actions** - CI/CD pipelines
-- **Prometheus & Grafana** - Monitoring and observability
+### AI & Analytics
+- **OpenAI GPT-4** - Advanced fraud detection and analysis
+- **Anthropic Claude** - Multi-model AI analysis for authenticity
+- **Sentence Transformers** - Product similarity embeddings
+- **pgvector** - Vector similarity search for duplicate detection
+- **TensorFlow.js** - Client-side ML for QR code validation
+
+### Frontend & User Experience
+- **React 18** - Modern component-based UI framework
+- **TypeScript** - Type-safe development across the stack
+- **Vite** - Lightning-fast build tooling and development
+- **Tailwind CSS** - Utility-first responsive design system
+- **React Query** - Advanced data fetching and state management
+- **PWA** - Progressive web app for mobile-first experience
+
+### Development & Operations
+- **Docker & Docker Compose** - Containerized development and deployment
+- **GitHub Actions** - Automated CI/CD pipelines
+- **Jest & Playwright** - Comprehensive testing framework
+- **ESLint & Prettier** - Code quality and formatting
+- **BMAD Method** - Advanced AI-assisted development methodology
 
 ## 📋 Prerequisites
 
-- **Python 3.11+**
-- **Node.js 18+**
+- **Node.js 18+** - For TypeScript services and frontend
+- **Python 3.11+** - For AI services and core APIs
 - **PostgreSQL 15+** with pgvector extension
-- **Redis 7+**
-- **Docker & Docker Compose** (recommended)
+- **Redis 7+** - For caching and real-time features
+- **Docker & Docker Compose** (recommended for local development)
 
-### For zkSNARK Features (Optional)
-- **Circom 2.0**
-- **snarkjs CLI**
-- **Trusted setup files**
+### For Blockchain Features
+- **Hedera Testnet Account** - Get free testnet HBAR from [Hedera Portal](https://portal.hedera.com)
+- **IPFS Node** - For decentralized storage (or use Pinata/Web3.Storage)
+
+### For African Market Integration
+- **Africa's Talking Account** - For SMS/USSD services
+- **M-Pesa Developer Account** - For mobile payments (Safaricom)
+- **Exchange Rate API Key** - For real-time currency conversion
 
 ## 🚀 Quick Start
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/ZubeidHendricks/verichainX-hedera.git
-cd verichainX-hedera
+git clone https://github.com/ZubeidHendricks/AfriChain.git
+cd AfriChain
 ```
 
 ### 2. Environment Setup
 ```bash
-# Copy environment template
-cp .env.example .env
+# Copy environment templates
+cp backend/auth-service/.env.example backend/auth-service/.env
+cp backend/hedera-service/.env.example backend/hedera-service/.env
 
-# Edit configuration
-nano .env
+# Edit configurations with your API keys
+nano backend/auth-service/.env
+nano backend/hedera-service/.env
 ```
 
-### 3. Quick Deploy to Digital Ocean (Recommended)
+### 3. Local Development Setup
 
-#### Option A: App Platform (5 minutes)
+#### Option A: Docker Compose (Recommended)
 ```bash
-# Deploy via Digital Ocean Console:
-# 1. Go to https://cloud.digitalocean.com/apps
-# 2. Create App from GitHub
-# 3. Select: ZubeidHendricks/verichainX-hedera
-# 4. Use .do/app.yaml configuration
-# 5. Set your API keys in environment variables
-# 6. Deploy!
-```
-
-#### Option B: Droplet Deployment (15 minutes)
-```bash
-# Make deployment script executable
-chmod +x deploy-to-do.sh
-
-# Run automated deployment
-./deploy-to-do.sh
-```
-
-#### Option C: Local Docker Deployment
-```bash
-# Start all services locally
+# Start all services
 docker-compose up -d
 
-# Initialize database
-docker-compose exec api python -m alembic upgrade head
+# Initialize databases
+docker-compose exec auth-service npm run migrate
+docker-compose exec hedera-service npm run setup
 
-# Create initial admin user
-docker-compose exec api python -m counterfeit_detection.scripts.create_admin
+# Access the application
+# Admin Dashboard: http://localhost:3000
+# Auth API: http://localhost:3001
+# Hedera API: http://localhost:3002
 ```
 
-### 4. Manual Development Setup
+#### Option B: Manual Setup
 ```bash
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate    # Windows
-
-# Install dependencies
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
-
-# Set up database
-createdb counterfeit_detection
-python -m alembic upgrade head
-
-# Install frontend dependencies
-cd src/frontend/admin-dashboard
+# Install backend dependencies
+cd backend/auth-service
 npm install
 npm run build
-cd ../../..
 
-# Start services
-python -m counterfeit_detection.main
+cd ../hedera-service
+npm install
+npm run build
+
+# Install frontend dependencies
+cd ../../frontend/frontend/admin-dashboard
+npm install
+
+# Set up databases
+createdb africhain_auth
+createdb africhain_hedera
+
+# Start services (in separate terminals)
+cd backend/auth-service && npm start
+cd backend/hedera-service && npm start
+cd frontend/frontend/admin-dashboard && npm run dev
+```
+
+### 4. Quick Deploy to Digital Ocean
+
+#### Option A: App Platform Deployment
+```bash
+# 1. Fork this repository
+# 2. Go to https://cloud.digitalocean.com/apps
+# 3. Create App from GitHub: ZubeidHendricks/AfriChain
+# 4. Configure environment variables:
+#    - HEDERA_ACCOUNT_ID, HEDERA_PRIVATE_KEY
+#    - AFRICAS_TALKING_API_KEY, MPESA_CONSUMER_KEY
+#    - DATABASE_URL, REDIS_URL
+# 5. Deploy!
+```
+
+#### Option B: Droplet Deployment
+```bash
+# Create Ubuntu 22.04 droplet (2GB RAM recommended)
+# SSH into droplet and run:
+
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+git clone https://github.com/ZubeidHendricks/AfriChain.git
+cd AfriChain
+sudo docker-compose up -d
 ```
 
 ## 🔧 Configuration
 
-### Environment Variables
+### Backend Service Environment Variables
 
+#### Auth Service (.env)
 ```bash
-# Core Application
-API_HOST=0.0.0.0
-API_PORT=8000
-DEBUG=false
-SECRET_KEY=your-secret-key-here
+# Core Configuration
+NODE_ENV=development
+PORT=3001
+JWT_SECRET=your-super-secret-jwt-key
+JWT_REFRESH_SECRET=your-refresh-secret-key
 
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/counterfeit_detection
+DATABASE_URL=postgresql://user:password@localhost:5432/africhain_auth
 REDIS_URL=redis://localhost:6379/0
 
-# AI Services
-OPENAI_API_KEY=your-openai-api-key
-ANTHROPIC_API_KEY=your-anthropic-api-key
+# Africa's Talking API
+AFRICAS_TALKING_API_KEY=your-africas-talking-api-key
+AFRICAS_TALKING_USERNAME=your-username
 
-# Vector Embeddings
-EMBEDDING_MODEL=all-MiniLM-L6-v2
-VECTOR_DIMENSIONS=384
+# M-Pesa Configuration
+MPESA_CONSUMER_KEY=your-mpesa-consumer-key
+MPESA_CONSUMER_SECRET=your-mpesa-consumer-secret
+MPESA_SHORTCODE=your-business-shortcode
+MPESA_PASSKEY=your-lipa-na-mpesa-passkey
 
-# zkSNARK Configuration (Optional)
-ZKSNARK_ENABLED=true
-CIRCUITS_PATH=/opt/circuits
-TRUSTED_SETUP_PATH=/opt/trusted-setup
+# Exchange Rates
+EXCHANGE_RATE_API_KEY=your-exchange-rate-api-key
 
-# Enterprise Integration
-SERVICENOW_URL=your-servicenow-instance
-SERVICENOW_USERNAME=your-username
-SERVICENOW_PASSWORD=your-password
-
-# Blockchain Anchoring
-ETHEREUM_RPC_URL=https://mainnet.infura.io/v3/your-project-id
-ANCHOR_PRIVATE_KEY=your-private-key
-
-# Notification Services
+# Email Configuration
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USERNAME=your-email@gmail.com
-SMTP_PASSWORD=your-app-password
-SLACK_WEBHOOK_URL=your-slack-webhook-url
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
 ```
 
-### API Documentation
+#### Hedera Service (.env)
+```bash
+# Core Configuration
+NODE_ENV=development
+PORT=3002
 
-Once the application is running, visit:
-- **API Documentation**: http://localhost:8000/docs
-- **Alternative Docs**: http://localhost:8000/redoc
-- **Admin Dashboard**: http://localhost:8000/admin
+# Hedera Configuration
+HEDERA_NETWORK=testnet
+HEDERA_ACCOUNT_ID=0.0.YOUR_ACCOUNT_ID
+HEDERA_PRIVATE_KEY=your-hedera-private-key
+
+# IPFS Configuration
+IPFS_API_URL=https://ipfs.infura.io:5001
+IPFS_PROJECT_ID=your-ipfs-project-id
+IPFS_PROJECT_SECRET=your-ipfs-secret
+
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/africhain_hedera
+REDIS_URL=redis://localhost:6379/1
+```
+
+### Application Access
+
+Once the application is running, access:
+- **🖥️ Admin Dashboard**: http://localhost:3000
+- **🔐 Auth API Docs**: http://localhost:3001/api-docs
+- **⛓️ Hedera API Docs**: http://localhost:3002/api-docs
+- **📊 Core API**: http://localhost:8000/docs
 
 ### Key API Endpoints
 
+#### Auth Service (Port 3001)
 ```http
-# Product Analysis
-POST /api/v1/products/analyze
-GET  /api/v1/products/{product_id}/analysis
+# Authentication
+POST /auth/register              # Phone-based registration
+POST /auth/verify-otp           # OTP verification
+POST /auth/login                # JWT login
+POST /auth/refresh              # Token refresh
+GET  /auth/profile              # User profile
 
-# Brand Management
-POST /api/v1/brands/register
-GET  /api/v1/brands/{brand_id}/verification-status
+# Multi-Channel Support
+POST /ussd/session              # USSD session handling
+POST /mobile/authenticate       # Mobile app auth
+GET  /auth/cross-channel/status # Session coordination
+```
 
-# Rule Management
-POST /api/v1/rules/
-GET  /api/v1/rules/active
+#### Hedera Service (Port 3002)
+```http
+# NFT Management
+POST /nft/mint                  # Mint product NFT
+GET  /nft/{tokenId}            # Get NFT details
+POST /nft/transfer             # Transfer NFT ownership
 
-# Analytics
-GET  /api/v1/analytics/metrics
-GET  /api/v1/analytics/performance
+# Product Registration
+POST /products/register         # Register new product
+GET  /products/{productId}     # Get product details
+POST /products/verify          # Verify product authenticity
 
-# Compliance (Enterprise)
-GET  /api/v1/compliance/overview
-POST /api/v1/compliance/reports/generate
+# QR Code Management
+POST /qr/generate              # Generate QR code
+GET  /qr/{qrId}/verify        # Verify QR code
+POST /qr/analytics            # QR scan analytics
 
-# zkSNARK Proofs (Enterprise)
-POST /api/v1/zkproof/generate
-GET  /api/v1/zkproof/{proof_id}/verify
+# Payment Processing
+POST /payments/hbar            # Process HBAR payment
+POST /payments/mpesa           # Process M-Pesa payment
+GET  /payments/{paymentId}     # Payment status
+GET  /exchange-rates/current   # Current exchange rates
+```
+
+#### Core API (Port 8000)
+```http
+# Analytics & Reporting
+GET  /api/v1/analytics/dashboard     # Main dashboard data
+GET  /api/v1/analytics/fraud-stats  # Fraud detection metrics
+POST /api/v1/reports/generate       # Generate custom reports
+
+# Admin Management
+GET  /api/v1/admin/users            # User management
+POST /api/v1/admin/settings         # System configuration
+GET  /api/v1/admin/audit-logs       # Audit trail
+```
+
+## 📁 Project Structure
+
+```
+VeriChainX-AfriChain-Ecosystem/
+├── 🌐 VeriChainX Protocol Layer
+│   └── backend/hedera-service/contracts/    # Smart Contract Suite
+│       ├── VeriChainXAuthenticityVerifier.sol # Core verification logic
+│       ├── VeriChainXTokenFactory.sol        # Dynamic token creation
+│       ├── VeriChainXGovernance.sol          # DAO governance
+│       ├── VeriChainXDAOTreasury.sol         # Treasury management
+│       ├── AMM/                              # Automated Market Maker
+│       │   ├── VeriChainXAuthenticityAMM.sol
+│       │   └── VeriChainXAuthenticityToken.sol
+│       ├── DeFi/                             # DeFi Protocol Suite
+│       │   ├── VeriChainXDEX.sol
+│       │   ├── VeriChainXLending.sol
+│       │   └── VeriChainXStaking.sol
+│       └── Bridge/                           # Cross-Chain Infrastructure
+│           ├── VeriChainXCrossChainBridge.sol
+│           └── VeriChainXBridgeRelay.sol
+│
+├── 🌍 AfriChain Application Layer
+│   ├── 📱 frontend/
+│   │   ├── App.verichainx.tsx             # VeriChainX Landing Page
+│   │   ├── components/                     # UI Components
+│   │   │   ├── AgentShowcase.tsx          # Hedera Agent Kit Demo
+│   │   │   ├── BlockchainSection.tsx      # VeriChainX Features
+│   │   │   └── AdminPreview.tsx           # Admin Dashboard Preview
+│   │   └── frontend/admin-dashboard/       # AfriChain Admin Interface
+│   │       ├── src/components/
+│   │       │   ├── activity/              # Activity monitoring
+│   │       │   ├── fraud/                 # Fraud detection UI
+│   │       │   ├── products/              # Product management
+│   │       │   └── qr/                    # QR code management
+│   │       └── src/routes.tsx             # Application routing
+│   │
+│   ├── 🔧 backend/
+│   │   ├── auth-service/                  # Multi-Channel Authentication
+│   │   │   ├── src/services/
+│   │   │   │   ├── mobileAuthService.ts   # Mobile app authentication
+│   │   │   │   ├── ussdService.ts         # USSD feature phone support
+│   │   │   │   ├── smsService.ts          # SMS/OTP services
+│   │   │   │   ├── mpesaService.ts        # M-Pesa integration
+│   │   │   │   └── jwtService.ts          # JWT token management
+│   │   │   └── routes/
+│   │   │       ├── auth.ts                # Authentication endpoints
+│   │   │       ├── mobile.ts              # Mobile-specific routes
+│   │   │       ├── ussd.ts                # USSD session handling
+│   │   │       └── mpesaRoutes.ts         # M-Pesa payment routes
+│   │   │
+│   │   ├── hedera-service/                # VeriChainX Integration Layer
+│   │   │   ├── src/agents/                # Hedera Agent Kit
+│   │   │   │   ├── HederaAgentKit.ts      # Main agent orchestrator
+│   │   │   │   ├── SmartContractAgent.ts  # VeriChainX contract interaction
+│   │   │   │   ├── HtsAgent.ts            # Token service integration
+│   │   │   │   └── AMMAgent.ts            # AMM interaction agent
+│   │   │   ├── src/services/
+│   │   │   │   ├── hederaNftService.ts    # NFT minting & management
+│   │   │   │   ├── smartContractService.ts # Contract deployment
+│   │   │   │   └── ammService.ts          # AMM liquidity management
+│   │   │   └── tests/
+│   │   │       ├── agents/                # Agent integration tests
+│   │   │       └── services/              # Service unit tests
+│   │   │
+│   │   └── api/                           # Core Analytics API
+│   │       ├── dashboard.py               # Business intelligence
+│   │       └── hedera/                    # Blockchain utilities
+│   │
+│   └── 🗂️ platform-services/              # AI & Business Logic
+│       └── counterfeit_detection/
+│           ├── agents/                    # AI agent system
+│           ├── api/v1/endpoints/         # REST API endpoints
+│           └── services/                  # Core business services
+│
+├── 📚 documentation/
+│   ├── stories/                          # User Story Documentation
+│   │   ├── story-1-1-phone-registration.md
+│   │   ├── story-2-1-product-registration-ipfs.md
+│   │   ├── story-2-2-hedera-nft-minting.md
+│   │   ├── story-3-1-qr-scanning-interface.md
+│   │   ├── story-4-1-hbar-payment-processing.md
+│   │   └── story-4-2-mpesa-integration.md
+│   └── docs/                             # Technical Documentation
+│       ├── VeriChainX-Protocol-Specs.md
+│       └── AfriChain-Integration-Guide.md
+│
+├── 🏗️ database/
+│   ├── main_tidb.py                      # TiDB serverless integration
+│   └── migrations/                       # Database schema migrations
+│
+└── 🐳 deployment/
+    ├── docker-compose.yml               # Multi-service orchestration
+    ├── DEPLOYMENT.md                    # Complete deployment guide
+    └── scripts/                         # Deployment automation
+        ├── deployAMM.ts                 # Deploy VeriChainX AMM
+        ├── deployBridge.ts              # Deploy cross-chain bridge
+        └── deployGovernance.ts          # Deploy DAO governance
 ```
 
 ## 🔄 Development Workflow
 
 ### Running Tests
 ```bash
-# Run all tests
-pytest
+# Auth Service Tests
+cd backend/auth-service
+npm test                    # Unit tests
+npm run test:integration   # Integration tests
+npm run test:coverage     # Coverage report
 
-# Run with coverage
-pytest --cov=src/counterfeit_detection --cov-report=html
+# Hedera Service Tests
+cd backend/hedera-service
+npm test                    # Blockchain tests
+npm run test:agents        # Agent tests
 
-# Run specific test categories
-pytest tests/agents/  # Agent tests
-pytest tests/api/     # API tests
-pytest tests/services/  # Service tests
+# Frontend Tests
+cd frontend/frontend/admin-dashboard
+npm test                    # Component tests
+npm run test:e2e           # End-to-end tests
 ```
 
 ### Code Quality
 ```bash
-# Linting
-black src/ tests/
-isort src/ tests/
-flake8 src/ tests/
+# TypeScript Services
+npm run lint               # ESLint + TypeScript
+npm run format            # Prettier formatting
+npm run type-check        # TypeScript compilation
 
-# Type checking
-mypy src/counterfeit_detection
+# Python Services (if using)
+black platform-services/  # Code formatting
+mypy platform-services/   # Type checking
+flake8 platform-services/ # Linting
 ```
 
-### Database Migrations
-```bash
-# Create new migration
-alembic revision --autogenerate -m "Description of changes"
+## 🏢 How AfriChain Utilizes VeriChainX Protocol
 
-# Apply migrations
-alembic upgrade head
+### VeriChainX Smart Contract Integration
 
-# Rollback migration
-alembic downgrade -1
+AfriChain leverages VeriChainX smart contracts for enterprise-grade verification:
+
+```typescript
+// Deploy product to VeriChainX authenticity verifier
+import { SmartContractAgent } from './agents/SmartContractAgent';
+import { VeriChainXAuthenticityVerifier } from './contracts/VeriChainXAuthenticityVerifier.sol';
+
+const contractAgent = new SmartContractAgent();
+
+// Register product with VeriChainX protocol
+const verification = await contractAgent.deployContract({
+  contractName: "VeriChainXAuthenticityVerifier",
+  constructorParams: {
+    productId: "prod_123",
+    artisanAddress: "0x...",
+    metadata: "ipfs://QmHash...",
+    origin: "Ghana"
+  }
+});
+
+// Mint authenticity token via VeriChainX Token Factory
+const authToken = await contractAgent.callContract({
+  contractId: verification.contractId,
+  method: "mintAuthenticityToken",
+  params: {
+    recipient: "0.0.123456",
+    productData: productMetadata
+  }
+});
 ```
 
-## 🏢 Enterprise Features
+### VeriChainX AMM Integration for Authenticity Trading
 
-### zkSNARK Cryptographic Verification
+Create liquidity pools for authenticity tokens:
 
-The system supports enterprise-grade cryptographic verification using zkSNARK proofs:
+```typescript
+// Create authenticity token liquidity pool
+import { AMMAgent } from './agents/AMMAgent';
 
-```python
-# Generate proof for product authenticity
-from counterfeit_detection.services import ZKProofService
+const ammAgent = new AMMAgent();
 
-zkproof_service = ZKProofService()
-proof = await zkproof_service.generate_product_proof(
-    product_id="prod_123",
-    brand_id="brand_456",
-    metadata=product_metadata
-)
+// Deploy AMM pool for authenticity tokens
+const ammPool = await ammAgent.createLiquidityPool({
+  tokenA: "AUTHENTIC_KENTE", // Authenticity token
+  tokenB: "HBAR", // Base currency
+  initialLiquidityA: "1000", 
+  initialLiquidityB: "500",
+  feeRate: 0.003 // 0.3% trading fee
+});
 
-# Verify proof
-verification = await zkproof_service.verify_proof(proof.id)
-assert verification.is_valid
+// AfriChain users can now trade authenticity tokens
+const swap = await ammAgent.swapTokens({
+  poolId: ammPool.id,
+  inputToken: "HBAR",
+  outputToken: "AUTHENTIC_KENTE",
+  inputAmount: "10"
+});
 ```
 
-### Compliance Reporting
+### Cross-Chain Verification via VeriChainX Bridge
 
-Generate regulatory compliance reports:
+Extend authenticity verification across multiple blockchains:
 
-```python
-from counterfeit_detection.services import AuditTrailService
+```typescript
+// Bridge authenticity verification to other chains
+import { BridgeAgent } from './agents/BridgeAgent';
 
-audit_service = AuditTrailService()
-report = await audit_service.generate_compliance_report(
-    period_start=datetime(2024, 1, 1),
-    period_end=datetime(2024, 12, 31),
-    report_type="regulatory"
-)
+const bridgeAgent = new BridgeAgent();
+
+// Bridge product verification to Ethereum/Polygon
+const crossChainVerification = await bridgeAgent.bridgeVerification({
+  sourceChain: "hedera",
+  targetChain: "ethereum",
+  productId: "prod_123",
+  verificationContract: verification.contractId,
+  targetAddress: "0x..." // Ethereum contract address
+});
+```
+
+### VeriChainX DAO Governance Integration
+
+African artisans can participate in protocol governance:
+
+```typescript
+// Submit governance proposal for AfriChain feature
+import { HederaAgentKit } from './agents/HederaAgentKit';
+
+const agentKit = new HederaAgentKit();
+
+// Create proposal for new African market features
+const proposal = await agentKit.createGovernanceProposal({
+  title: "Add USSD Support for Rural Areas",
+  description: "Implement USSD interface for feature phone users",
+  proposalType: "FEATURE_REQUEST",
+  votingPeriod: 7 * 24 * 60 * 60, // 7 days
+  requiredQuorum: 0.1, // 10% participation
+  actionContract: "VeriChainXGovernance",
+  actionMethod: "upgradeProtocol",
+  actionParams: {
+    feature: "USSD_INTERFACE",
+    implementation: "ipfs://QmImplementationHash..."
+  }
+});
+
+// African artisans vote on proposals affecting their market
+const vote = await agentKit.castVote({
+  proposalId: proposal.id,
+  vote: "FOR",
+  voter: artisanAddress,
+  votingPower: artisanStake
+});
 ```
 
 ## 📊 Monitoring & Observability
 
-### Metrics Endpoints
-- Health check: `GET /health`
-- Metrics: `GET /metrics` (Prometheus format)
-- Agent status: `GET /api/v1/agents/status`
+### Health Endpoints
+- Auth Service: `GET /health` - Authentication service status
+- Hedera Service: `GET /health` - Blockchain connectivity status  
+- Admin Dashboard: Real-time system monitoring
+- Payment Status: Live transaction tracking
 
-### Performance Monitoring
-- Response time tracking
-- Agent performance metrics
-- Database query optimization
-- zkSNARK verification timing
+### Performance Metrics
+- Transaction processing times
+- Blockchain confirmation speeds
+- Payment gateway response times
+- QR code scan analytics
+- Fraud detection accuracy rates
 
 ## 🔒 Security
 
-### Authentication & Authorization
-- JWT-based authentication
-- Role-based access control (RBAC)
-- API key management for external integrations
+### Multi-Layer Authentication
+- Phone number + OTP verification
+- JWT tokens with refresh rotation
+- Cross-channel session management
+- USSD security for feature phones
+
+### Blockchain Security
+- Hedera Hashgraph consensus security
+- IPFS content addressing
+- NFT ownership verification
+- Immutable transaction records
 
 ### Data Protection
-- Encryption at rest and in transit
-- PII data anonymization
-- GDPR compliance features
-- Audit logging for all operations
-
-### Cryptographic Security
-- zkSNARK zero-knowledge proofs
-- Blockchain audit trail anchoring
-- Merkle tree integrity verification
-- Enterprise PKI integration
+- Encrypted communication channels
+- Secure API key management
+- Payment data tokenization
+- GDPR-compliant data handling
+- Comprehensive audit trails
 
 ## 🚀 Deployment
 

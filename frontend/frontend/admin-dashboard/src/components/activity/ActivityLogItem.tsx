@@ -29,11 +29,24 @@ import {
 
 import {
   ActivityLogEntry,
+  ActivityStatus,
   getActivityTypeIcon,
   getActivityTypeColor,
-  getStatusColor,
   formatDuration,
-} from '@types';
+} from '@types/activity';
+
+// Import activity-specific status color function
+const getStatusColor = (status: ActivityStatus): string => {
+  const colors: Record<ActivityStatus, string> = {
+    pending: '#f57c00',
+    running: '#1976d2', 
+    completed: '#388e3c',
+    failed: '#d32f2f',
+    cancelled: '#7b1fa2',
+    retry: '#ff9800'
+  };
+  return colors[status] || '#616161';
+};
 
 interface ActivityLogItemProps {
   activity: ActivityLogEntry;
