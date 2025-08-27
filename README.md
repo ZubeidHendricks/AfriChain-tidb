@@ -1,5 +1,8 @@
-# 🌐 VeriChainX + AfriChain - Complete Blockchain Authenticity Ecosystem
+# 🚀 AfriChain VeriChainX - TiDB AgentX Hackathon 2025 Submission
 
+[![TiDB AgentX Hackathon](https://img.shields.io/badge/TiDB%20AgentX-Hackathon%202025-blue.svg)](https://tidb.cloud)
+[![Multi-Agent System](https://img.shields.io/badge/Multi--Agent-Agentic%20AI-green.svg)]()
+[![TiDB Serverless](https://img.shields.io/badge/TiDB-Serverless%20HTAP-orange.svg)](https://tidb.cloud)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
@@ -7,6 +10,155 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-00a393.svg)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-18+-61dafb.svg)](https://reactjs.org)
 [![Hedera](https://img.shields.io/badge/Hedera-Network-purple.svg)](https://hedera.com)
+
+## 🏆 TiDB AgentX Hackathon 2025 - Multi-Agent AI System
+
+**AfriChain VeriChainX** is a sophisticated **multi-agent AI system** designed to combat counterfeit products in African markets using **TiDB Serverless** as the core HTAP database, combined with blockchain verification and intelligent automation workflows.
+
+### 📋 Hackathon Submission Details
+- **Repository**: https://github.com/ZubeidHendricks/AfriChain-tidb
+- **TiDB Cloud Email**: hackathon-judge@pingcap.com
+- **Live Demo**: Deployed on Digital Ocean App Platform
+- **Submission Type**: Multi-step agentic AI system with TiDB Serverless HTAP
+
+### 🎯 Hackathon Requirements Compliance
+
+#### ✅ Multi-Step Agentic Workflows
+Our system chains together **5+ AI agents** in automated workflows:
+
+1. **🔍 Data Ingestion Agent** → Pulls product data, images, and metadata into TiDB Serverless
+2. **🎯 Vector Search Agent** → Queries TiDB vector indexes for similar products and fraud patterns  
+3. **🤖 AI Analysis Agent** → Chains multiple LLM calls (OpenAI + Anthropic) for authenticity analysis
+4. **⚡ External Tool Agent** → Invokes Hedera blockchain, payment gateways, and SMS services
+5. **🔄 Orchestrator Agent** → Coordinates the complete workflow from detection to enforcement
+
+#### ✅ TiDB Serverless Integration
+- **Real-time Analytics**: HTAP queries for fraud pattern detection
+- **Vector Search**: Product similarity matching using TiDB vector capabilities
+- **Scalable Storage**: Product catalog, user data, and transaction history
+- **Multi-dimensional Indexing**: Text search + vector embeddings + traditional indexes
+
+### 🔄 Multi-Step Workflow Example
+
+```python
+# Counterfeit Detection Pipeline
+await orchestrator.trigger_workflow("counterfeit_detection", {
+    "product_data": product_info,
+    "image_url": product_image
+})
+
+# Step 1: Data Ingestion Agent
+→ Stores product in TiDB Serverless
+→ Generates vector embeddings 
+→ Creates full-text indexes
+
+# Step 2: Vector Search Agent  
+→ Queries TiDB for similar products
+→ Finds potential duplicates/counterfeits
+→ Returns similarity scores
+
+# Step 3: AI Analysis Chain
+→ Calls OpenAI GPT-4 for text analysis
+→ Calls Anthropic Claude for image analysis
+→ Combines results with confidence scoring
+
+# Step 4: External Tools Integration
+→ Verifies on Hedera blockchain
+→ Processes payments via M-Pesa
+→ Sends alerts via SMS/USSD
+
+# Step 5: Orchestrated Response
+→ Updates TiDB analytics tables
+→ Triggers enforcement actions
+→ Notifies stakeholders
+```
+
+### 🚀 Quick Demo for Judges
+
+```bash
+# Clone and setup (5 minutes)
+git clone https://github.com/ZubeidHendricks/AfriChain-tidb.git
+cd AfriChain-tidb
+
+# Quick start with Docker
+docker-compose up -d
+
+# Or direct Python startup
+uvicorn database.main_tidb:app --reload --port 8000
+
+# Open demo: http://localhost:8000
+```
+
+### 🎮 Interactive Demo Features
+
+**Real-Time Product Analysis API**:
+```bash
+curl -X POST http://localhost:8000/api/v1/products/analyze \
+  -H "Content-Type: application/json" \
+  -d '{
+    "product_name": "Traditional Kente Cloth",
+    "description": "Authentic handwoven Ghanaian Kente with gold threads",
+    "price": 150.00,
+    "origin": "Kumasi, Ghana"
+  }'
+```
+
+**TiDB Vector Search Demo**:
+```bash
+curl "http://localhost:8000/api/v1/search/similar?query=kente+cloth&threshold=0.8"
+```
+
+**TiDB Analytics Dashboard**:
+```bash
+curl http://localhost:8000/api/v1/tidb/stats
+```
+
+### 🏗️ Multi-Agent Architecture
+
+```mermaid
+graph TB
+    subgraph "🤖 Multi-Agent System"
+        A1[Authenticity Analyzer Agent]
+        A2[Rule Engine Agent] 
+        A3[Notification Agent]
+        A4[Enforcement Agent]
+        A5[Orchestrator Agent]
+    end
+    
+    subgraph "🗄️ TiDB Serverless HTAP"
+        T1[Product Catalog]
+        T2[Vector Embeddings]
+        T3[Analytics Data]
+        T4[User Sessions]
+    end
+    
+    subgraph "🔗 External Integrations"
+        E1[OpenAI/Anthropic LLMs]
+        E2[Hedera Blockchain]
+        E3[M-Pesa Payments]
+        E4[SMS/USSD Services]
+        E5[IPFS Storage]
+    end
+    
+    A5 --> A1 --> E1
+    A1 --> T2
+    A2 --> T3
+    A3 --> E4
+    A4 --> E2
+    T1 --> T2 --> T3
+    E5 --> T1
+```
+
+### 🎯 Hackathon Highlights
+- **Real Problem**: $52B annual losses from counterfeits in Africa
+- **Multi-Agent AI**: 5+ agents working in coordinated workflows
+- **TiDB HTAP**: Vector search + real-time analytics 
+- **External Tools**: LLMs + blockchain + payments + SMS
+- **Production Ready**: Deployed and fully functional
+
+---
+
+## 🌐 Complete System Overview
 
 ## 🏗️ Two-Tier Architecture Overview
 
